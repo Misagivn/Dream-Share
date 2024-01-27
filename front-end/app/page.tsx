@@ -33,8 +33,8 @@ export default function Home() {
           <Image
             removeWrapper
             alt="Card background"
-            className="z-0 object-cover"
-            src="../components/image/00016-1469429408.png"
+            className="z-0 object-cover absolute"
+            src="image1"
           />
         </Card>
       </div>
