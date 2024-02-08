@@ -1,25 +1,23 @@
 const mySQL = require("mysql2");
-const dotenv = require("dotenv");
-dotenv.config();
+require('dotenv').config();
 
-const pool = mySQL
-    .createPool({
-        // host: 'localhost', 
-        // user: 'sa', 
-        // password: '123456', 
-        // database: 'dream_share' 
-        host: process.env.MYSQL_HOST,
-        port: process.env.MYSQL_PORT,
-        user: process.env.MYSQL_USERNAME,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE,
-    }).promise();
+const pool = mySQL.createPool({
+  host: 'localhost',
+  user: 'sa',
+  password: '123456',
+  database: 'dream_share'
+//   host: process.env.MYSQL_HOST,
+//   user: process.env.MYSQL_USERNAME,
+//   password: process.env.MYSQL_PASSWORD,
+//   database: process.env.MYSQL_DATABASE,
+});
 
 //Test connection here
-// Async function to execute SQL query
-async function testCon() {
-    // Execute query and get rows
-    const [rows] = await pool.execute('SELECT * FROM account');
-    // Return rows
-    return rows;
-}
+let sql = "SELECT * FROM role";
+
+pool.execute(sql, function (err, res) {
+  if (err) throw err;
+  console.log(res);
+});
+
+module.exports = pool.promise();
