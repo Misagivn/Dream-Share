@@ -6,11 +6,11 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 //Product route
-app.use("/products", require("./routes/products"));
+app.use("/products", require("./routes/productRoutes"));
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
