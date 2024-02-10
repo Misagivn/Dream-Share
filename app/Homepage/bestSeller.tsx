@@ -1,11 +1,11 @@
+import { Display, Wrapper, Header, Title } from "./bestSeller.styled";
 import Item from "./items";
-import { Display, Global, Header, Title } from "./newProduct.styled";
 
-export default function NewProduct() {
+export default function BestSeller() {
   return (
-    <Global>
+    <Wrapper>
       <Header>
-        <Title>New Product</Title>
+        <Title>Best Seller</Title>
         <a href="">Read more...</a>
       </Header>
       <Display>
@@ -17,7 +17,11 @@ export default function NewProduct() {
         <Item />
         <Item />
         <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
       </Display>
-    </Global>
+    </Wrapper>
   );
 }
