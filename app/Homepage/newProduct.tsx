@@ -6,7 +6,7 @@ export default function NewProduct() {
     <Global>
       <Header>
         <Title>New Product</Title>
-        <a href="">Read more...</a>
+        <p>Read more...</p>
       </Header>
       <Display>
         <Item />
