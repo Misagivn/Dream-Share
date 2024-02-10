@@ -4,7 +4,8 @@ import styled from "styled-components";
 export const FeaturedProduct = styled.div`
   display: grid;
   grid-template-columns: auto auto;
-  padding: 0px 100px 0px 100px;
+  gap: 100px;
+  padding: 0px 100px 30px 100px;
   justify-content: space-evenly;
   align-items: center;
 `;

@@ -4,15 +4,13 @@ import { Image } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
 
 import Featured from "@/app/homepage/featured";
-import newProduct form "@/app/homepage/newProduct";
+import NewProduct from "./homepage/newProduct";
 
 export default function Home() {
   return (
       <div>
         <Featured/>
-        <div>
-          New Product
-        </div>
+        <NewProduct/>
       </div>
   );
 }
