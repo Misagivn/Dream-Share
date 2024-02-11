@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
 
-import Featured from "./homepages/featured";
-import NewProduct from "./homepages/newProduct";
-import BestSeller from "./homepages/bestSeller";
-import ImageListing from "./homepages/imageListing";
+import Featured from "./homepage/featured";
+import NewProduct from "./homepage/newProduct";
+import BestSeller from "./homepage/bestSeller";
+import ImageListing from "./homepage/imageListing";
+import Footer from "./homepage/footer";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <NewProduct/>
         <BestSeller/>
         <ImageListing/>
+        <Footer/>
       </div>
   );
 }

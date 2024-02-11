@@ -1,4 +1,3 @@
-import { Button } from "@nextui-org/button";
 import styled from "styled-components";
 
 export const FeaturedProduct = styled.div`
