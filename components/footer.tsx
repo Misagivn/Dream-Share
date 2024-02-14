@@ -1,3 +1,5 @@
+"use client";
+
 import { Link } from "@nextui-org/link";
 import {
   Heading,
@@ -14,8 +16,8 @@ export default function Footer() {
         <div>
           <Heading>About</Heading>
           <ListWrapper>
-            <ListItem>
-              <a href="">News</a>
+            <ListItem> 
+              <a href="/news">News</a>
             </ListItem>
             <ListItem>
               <a href="">Gallery</a>
