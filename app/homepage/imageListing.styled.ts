@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   height: 800px;
   display: flex;
+  flex-direction: row-reverse;
   flex-wrap: nowrap;
   justify-content: space-between;
   gap: 10px;
@@ -28,7 +29,7 @@ export const Card = styled.label`
   overflow: hidden;
   margin: 0 10px 0 0;
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   transition: 0.6s cubic-bezier(0.28, -0.03, 0, 0.99);
 `;
 

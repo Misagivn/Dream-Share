@@ -1,34 +1,77 @@
 import { Button } from "@nextui-org/button";
-import { Card, Wrapper, Container, Input, Image, ButtonSpacing, Title } from "./imageListing.styled";
+import {
+  Card,
+  Wrapper,
+  Container,
+  Input,
+  Image,
+  ButtonSpacing,
+  Title,
+} from "./imageListing.styled";
+import { SetStateAction, useState } from "react";
 
 export default function ImageListing() {
+  const [selectedOption, setSelectedOption] = useState("option4");
+  const handleChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setSelectedOption(event.target.value);
+  };
   return (
     <div>
       <Title>Interst in our interior space?</Title>
       <Wrapper>
         <Container>
-          <Input type="radio" name="slide" id="c1" checked></Input>
+          <Input
+            type="radio"
+            name="slide"
+            id="c1"
+            value="option1"
+            checked={selectedOption === "option1"}
+            onChange={handleChange}
+          ></Input>
           <Card htmlFor="c1">
             <Image
               alt=""
               src="https://media.designcafe.com/wp-content/uploads/2023/01/31151510/contemporary-interior-design-ideas-for-your-home.jpg"
             />
           </Card>
-          <Input type="radio" name="slide" id="c2" checked></Input>
+          <Input
+            type="radio"
+            name="slide"
+            id="c2"
+            value="option2"
+            checked={selectedOption === "option2"}
+            onChange={handleChange}
+          ></Input>{" "}
           <Card htmlFor="c2">
             <Image
               alt=""
               src="https://www.sbid.org/wp-content/uploads/2022/04/spacejoy-4xRP0Ajk9ys-unsplash-e1655133373712.jpg"
             />
           </Card>
-          <Input type="radio" name="slide" id="c3" checked></Input>
+          <Input
+            type="radio"
+            name="slide"
+            id="c3"
+            value="option3"
+            checked={selectedOption === "option3"}
+            onChange={handleChange}
+          ></Input>
           <Card htmlFor="c3">
             <Image
               alt=""
               src="https://www.decorilla.com/online-decorating/wp-content/uploads/2020/06/modern-interior-design-living-room-by-decorilla-designer-mladen-c.jpeg"
             />
           </Card>
-          <Input type="radio" name="slide" id="c4" checked></Input>
+          <Input
+            type="radio"
+            name="slide"
+            id="c4"
+            value="option4"
+            checked={selectedOption === "option4"}
+            onChange={handleChange}
+          ></Input>
           <Card htmlFor="c4">
             <Image
               alt=""

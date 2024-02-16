@@ -1,36 +1,36 @@
 import { Button } from "@nextui-org/button";
-import { Image } from "@nextui-org/react";
-import React from "react";
-import { ButtonSpacing, FeaturedProduct, Title } from "./featured.styled";
-import data from "../featured.json"
+import React, { useEffect, useState } from "react";
+import { ButtonSpacing, FeaturedProduct, Title, Image} from "./featured.styled";
 
 export default function Featured() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("https://65cd13f5dd519126b8401401.mockapi.io/FeaturedProduct")
+      .then((response) => response.json())
+      .then((data) => setData(data[0]))
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <div>
-      {data.map((item) => (
-        <FeaturedProduct key={item.id}>
-        <div>
-          <Title>{item.name}</Title>
-          <p>
-            {item.description}
-          </p>
-          <ButtonSpacing>
-            <Button color="primary" variant="bordered">
-              Read More
-            </Button>
-            <Button color="primary" variant="solid">
-              Add to Cart
-            </Button>
-          </ButtonSpacing>
-        </div>
-        <Image
-          width={400}
-          alt="NextUI hero Image"
-          src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-        />
-      </FeaturedProduct>
-      ))}
+      {data && (
+        <FeaturedProduct>
+          <div>
+            <Title>{data['title']}</Title>
+            <p>{data['description']}</p>
+            <ButtonSpacing>
+              <Button color="primary" variant="bordered">
+                Read More
+              </Button>
+              <Button color="primary" variant="solid">
+                Add to Cart
+              </Button>
+            </ButtonSpacing>
+          </div>
+          <Image alt="NextUI hero Image" src={data['imageUrl']} />
+        </FeaturedProduct>
+      )}
     </div>
   );
 }
