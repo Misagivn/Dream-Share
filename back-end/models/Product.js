@@ -65,10 +65,12 @@ class Product {
     `;
     return db.execute(sql);
   }
+
   static findAll() {
     let sql = "SELECT * FROM product";
     return db.execute(sql);
   }
+  
   static findProductById(id) {
     let sql = `SELECT * FROM product WHERE id=${id}`;
     return db.execute(sql);
@@ -118,6 +120,11 @@ class Product {
   static deleteProduct(id) {
     let sql = `DELETE FROM product WHERE id = ${id}`;
     return db.execute(sql);
+  }
+
+  static findProductByName(productName){
+    let sql = `SELECT * FROM product WHERE name LIKE '%${productName}%'`;
+    return  db.execute(sql);
   }
 }
 
