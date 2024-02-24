@@ -1,9 +1,11 @@
-import { title } from "@/components/primitives";
+import React from 'react';
 
-export default function SignUpPage() {
-	return (
-		<div>
-			<h1 className={title()}>SignIn Page</h1>
-		</div>
-	);
-}
+const SignInPage: React.FC = () => {
+  return (
+    <div>
+      
+    </div>
+  );
+};
+
+export default SignInPage;

@@ -6,7 +6,7 @@ import NewProduct from "./homepage/newProduct";
 import BestSeller from "./homepage/bestSeller";
 import ImageListing from "./homepage/imageListing";
 
-fetch("https://65cd13f5dd519126b8401401.mockapi.io/NewProduct")
+fetch("http://26.221.156.50:5000/products/1")
   .then((response) => response.json())
   .then((data) => {
     const firstElement = data[0];

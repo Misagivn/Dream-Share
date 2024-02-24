@@ -17,7 +17,7 @@ export default function Featured() {
       {data && (
         <FeaturedProduct>
           <div>
-            <Title>{data['title']}</Title>
+            <Title>{data['name']}</Title>
             <p>{data['description']}</p>
             <ButtonSpacing>
               <Button color="primary" variant="bordered">

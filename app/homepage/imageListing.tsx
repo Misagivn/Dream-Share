@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@nextui-org/button";
 import {
   Card,
@@ -7,8 +9,10 @@ import {
   Image,
   ButtonSpacing,
   Title,
+  linkButton,
 } from "./imageListing.styled";
 import { SetStateAction, useState } from "react";
+import Link from "next/link";
 
 export default function ImageListing() {
   const [selectedOption, setSelectedOption] = useState("option4");
@@ -81,7 +85,13 @@ export default function ImageListing() {
         </Container>
       </Wrapper>
       <ButtonSpacing>
-        <Button color="primary" variant="solid">
+        <Button
+          color="primary"
+          variant="solid"
+          as={Link}
+          className="text-sm font-normal"
+          href="/appointment"
+        >
           Visit Now
         </Button>
       </ButtonSpacing>

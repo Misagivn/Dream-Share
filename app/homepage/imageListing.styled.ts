@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
-  height: 800px;
+  height: 450px;
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: nowrap;
@@ -45,8 +45,14 @@ export const Image = styled.img`
   object-fit: cover;
 `;
 
-export const ButtonSpacing = styled.div`
+export const ButtonSpacing = styled.a`
     display: flex;
     justify-content: center;
     padding: 20px;
+    font-size: 30px;
+    font-weight: bold;
 `
+
+export const linkButton = styled.a`
+    
+`;

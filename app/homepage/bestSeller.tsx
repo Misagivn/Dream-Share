@@ -23,14 +23,14 @@ export default function BestSeller() {
     <Wrapper>
       <Header>
         <Title>Best Seller</Title>
-        <a href="">Read more...</a>
+        <a href="/best-seller">Read more...</a>
       </Header>
       <Display>
         {data.slice(0, 12).map((item, index) => (
           <Card
             key={index}
             isFooterBlurred
-            className="w-[420px] h-[300px] col-span-12 sm:col-span-7"
+            className="w-[260px] h-[300px] col-span-12 sm:col-span-7"
           >
             <CardHeader className="absolute bg-black/70 z-10 flex-col items-start">
               <p className="text-tiny text-white/60 uppercase font-bold">

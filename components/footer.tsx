@@ -23,7 +23,7 @@ export default function Footer() {
               <a href="">Gallery</a>
             </ListItem>
             <ListItem>
-              <a href="">About Us</a>
+              <a href="/about">About Us</a>
             </ListItem>
           </ListWrapper>
         </div>
@@ -34,7 +34,7 @@ export default function Footer() {
               <a href="">Support</a>
             </ListItem>
             <ListItem>
-              <a href="">Contact Us</a>
+              <a href="/contact-us">Contact Us</a>
             </ListItem>
           </ListWrapper>
         </div>
@@ -42,16 +42,16 @@ export default function Footer() {
           <Heading>Quick Links</Heading>
           <ListWrapper>
             <ListItem>
-              <a href="">Privacy Policy</a>
+              <a href="/privacy-policy">Privacy Policy</a>
             </ListItem>
             <ListItem>
-              <a href="">Return & Refund Policy</a>
+              <a href="/refund-privacy">Return & Refund Policy</a>
             </ListItem>
             <ListItem>
-              <a href="">Shipping Policy</a>
+              <a href="/shipping-policy">Shipping Policy</a>
             </ListItem>
             <ListItem>
-              <a href="">Term of Service</a>
+              <a href="/terms-of-service">Terms of Service</a>
             </ListItem>
           </ListWrapper>
         </div>
