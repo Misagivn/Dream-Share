@@ -28,7 +28,7 @@ export default function SignInPage() {
                 >
                   <Input
                     type="email"
-                    variant={variant}
+                    //variant={variant}
                     label="Email"
                     placeholder="Enter your email"
                     className="w-full h-35 px-4 ml-10 mr-10 mb-10"
@@ -46,7 +46,7 @@ export default function SignInPage() {
                 >
                   <Input
                     type="password"
-                    variant={variant}
+                    //variant={variant}
                     label="Password"
                     placeholder="Enter your password"
                     className="w-full h-35 px-4 ml-10 mr-10 mb-10"
