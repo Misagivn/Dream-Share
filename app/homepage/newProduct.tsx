@@ -15,7 +15,7 @@ export default function NewProduct() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://65cd13f5dd519126b8401401.mockapi.io/NewProduct")
+    fetch("https://65cd13f5dd519126b8401401.mockapi.io/Product")
       .then((response) => response.json())
       .then((data) => {
         setData(data);

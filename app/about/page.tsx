@@ -1,5 +1,5 @@
 "use client";
-import { title } from "@/components/primitives";
+import { title } from "@/app/components/primitives";
 import { Accordion, AccordionItem, Card, Spacer } from "@nextui-org/react";
 
 export default function AboutPage() {

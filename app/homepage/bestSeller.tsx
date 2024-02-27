@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 export default function BestSeller() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch("https://65cd13f5dd519126b8401401.mockapi.io/NewProduct")
+    fetch("https://65cd13f5dd519126b8401401.mockapi.io/Product")
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error(error));
