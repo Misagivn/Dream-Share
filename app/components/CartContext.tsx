@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 // Define the shape of the context
 interface CartContextData {
@@ -11,16 +11,18 @@ interface CartContextData {
 const CartContext = createContext<CartContextData | undefined>(undefined);
 
 // Create the provider component
-const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [cartItems, setCartItems] = useState<any[]>(() => {
     // Get the cart items from local storage when initializing the state
-    const savedCartItems = localStorage.getItem('cartItems');
+    const savedCartItems = localStorage.getItem("cartItems");
     return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
 
   useEffect(() => {
     // Save the cart items in local storage whenever they change
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addToCart = (item: any) => {
@@ -28,7 +30,13 @@ const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   };
 
   const removeFromCart = (item: any) => {
-    setCartItems((prevItems) => prevItems.filter((i) => i !== item));
+    setCartItems((prevItems) => {
+      const newCartItems = prevItems.filter((i) => i !== item);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+      }
+      return newCartItems;
+    });
   };
 
   return (
@@ -42,7 +50,7 @@ const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };

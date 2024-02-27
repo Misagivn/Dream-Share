@@ -1,29 +1,50 @@
-"use client";
-import { CartProvider, useCart } from "./CartContext";
-import { Abutton, H1, P, Wrapper } from "../cart/page.styled";
+import { Button } from "@nextui-org/button";
+import { useCart } from "./CartContext";
+import { Image, Itemtitle } from "./ViewCart.styled";
 
 const ViewCart: React.FC = () => {
+  const { removeFromCart } = useCart();
+  const handleRemoveFromCart = (item: any) => {
+    removeFromCart(item);
+    console.log("Item removed from cart");
+  };
   const { cartItems } = useCart();
-
-  return (
-    <Wrapper>
-      {cartItems.length > 0 ? (
-        cartItems.map((item, index) => (
-          <div key={index}>
-            {/* Replace the following with how you want to display each item */}
-            <h2>{item.name}</h2>
-            <p>{item.description}</p>
-            <img src={item.image} alt={item.name} />
-          </div>
-        ))
-      ) : (
-        <>
-          <H1>Your cart is empty</H1>
-          <P>You have not added any cart items yet.</P>
-          <Abutton href="">Continue shopping</Abutton>
-        </>
-      )}
-    </Wrapper>
+  return cartItems.length > 0 ? (
+    cartItems.map((item, index) => (
+      <tr key={index}>
+        <td width={140} className="align-top">
+          <img src={item.image} alt={item.title} />
+        </td>
+        <td>
+          <Itemtitle>{item.title}</Itemtitle>
+          <Itemtitle>{item.collection}</Itemtitle>
+        </td>
+        <td>
+          <input
+            type="number"
+            className="table-checkout-quantity-input form-control form-control-sm text-center"
+          ></input>
+        </td>
+        <td>
+          <Itemtitle>USD ${item.price}</Itemtitle>
+        </td>
+        <td>
+          <Button
+            color="primary"
+            variant="solid"
+            onClick={() => handleRemoveFromCart(item)}
+          >
+            Remove
+          </Button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <>
+      <h1>Your cart is empty</h1>
+      <p>You have not added any cart items yet.</p>
+      <a href="">Continue shopping</a>
+    </>
   );
 };
 
