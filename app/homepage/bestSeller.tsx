@@ -30,7 +30,7 @@ export default function BestSeller() {
           <Card
             key={index}
             isFooterBlurred
-            className="w-[260px] h-[300px] col-span-12 sm:col-span-7"
+            className="w-[295px] h-[300px] col-span-12 sm:col-span-7"
           >
             <CardHeader className="absolute bg-black/70 z-10 flex-col items-start">
               <p className="text-tiny text-white/60 uppercase font-bold">
@@ -39,7 +39,7 @@ export default function BestSeller() {
               <h4 className="text-white/90 font-medium text-xl">
                 {(item as { title: string }).title}
               </h4>
-            </CardHeader>
+            </CardHeader> 
             <Image
               removeWrapper
               alt="Relaxing app background"

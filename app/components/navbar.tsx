@@ -92,9 +92,9 @@ export const Navbar = () => {
             variant="bordered"
             as={Link}
             className="text-sm font-normal"
-            href="/signup"
+            href="/cart"
           >
-            Sign Up
+            Cart
           </Button>
           <Button
             color="primary"

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const FeaturedProduct = styled.div`
   display: grid;
   grid-template-columns: auto auto;
-  padding: 30px 100px 0px 100px;
+  padding: 30px 1.5rem 0px 1.5rem;
   justify-content: space-between;
   align-items: center;
   gap: 60px;

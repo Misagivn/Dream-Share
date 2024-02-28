@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 1rem;
+  margin-right: 1rem;
 `;
 
 export const H1 = styled.h1`

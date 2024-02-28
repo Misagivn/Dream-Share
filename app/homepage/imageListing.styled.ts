@@ -8,12 +8,12 @@ export const Title = styled.h1`
   padding: 30px;
 `;
 export const Wrapper = styled.div`
-  padding-left: 100px;
-  padding-right: 100px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 `;
 
 export const Container = styled.div`
-  height: 450px;
+  height: 500px;
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: nowrap;
@@ -52,7 +52,3 @@ export const ButtonSpacing = styled.a`
     font-size: 30px;
     font-weight: bold;
 `
-
-export const linkButton = styled.a`
-    
-`;

@@ -9,8 +9,14 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { useCart } from "../components/CartContext";
 
 export default function NewProduct() {
+  const { addToCart } = useCart();
+  const handleAddToCart = (data: any) => {
+    addToCart(data);
+    console.log(data);
+  };
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
@@ -34,7 +40,7 @@ export default function NewProduct() {
           <Card
             key={index}
             isFooterBlurred
-            className="w-[260px] h-[300px] col-span-12 sm:col-span-7"
+            className="w-[295px] h-[300px] col-span-12 sm:col-span-7"
           >
             <CardHeader className="absolute bg-black/70 z-10 flex-col items-start">
               <p className="text-tiny text-white/60 uppercase font-bold">
@@ -58,7 +64,7 @@ export default function NewProduct() {
                   </p>
                 </div>
               </div>
-              <Button radius="full" size="sm">
+              <Button radius="full" size="sm" onClick={() => handleAddToCart(data[index])}>
                 Add to Cart
               </Button>
             </CardFooter>

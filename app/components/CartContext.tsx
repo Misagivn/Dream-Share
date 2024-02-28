@@ -5,6 +5,7 @@ interface CartContextData {
   cartItems: any[];
   addToCart: (item: any) => void;
   removeFromCart: (item: any) => void;
+  updateQuantity: (item: any, quantity: number) => void;
 }
 
 // Create the context
@@ -16,8 +17,10 @@ const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [cartItems, setCartItems] = useState<any[]>(() => {
     // Get the cart items from local storage when initializing the state
-    const savedCartItems = localStorage.getItem("cartItems");
-    return savedCartItems ? JSON.parse(savedCartItems) : [];
+    if (typeof window !== "undefined") {
+      const savedCartItems = localStorage.getItem("cartItems");
+      return savedCartItems ? JSON.parse(savedCartItems) : [];
+    }
   });
 
   useEffect(() => {
@@ -26,21 +29,36 @@ const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [cartItems]);
 
   const addToCart = (item: any) => {
-    setCartItems((prevItems) => [...prevItems, item]);
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((i) => i.id === item.id);
+      if (existingItem) {
+        // If the item is already in the cart, increment its quantity
+        return prevItems.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      } else {
+        // If the item is not in the cart, add it with a quantity of 1
+        return [...prevItems, { ...item, quantity: 1 }];
+      }
+    });
   };
 
   const removeFromCart = (item: any) => {
     setCartItems((prevItems) => {
-      const newCartItems = prevItems.filter((i) => i !== item);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cartItems", JSON.stringify(newCartItems));
-      }
-      return newCartItems;
+      const existingItem = prevItems.find((i) => i.id === item.id);
+      return prevItems.filter((i) => i.id !== item.id);
     });
+  };
+  const updateQuantity = (item: any, quantity: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((i) => (i.id === item.id ? { ...i, quantity } : i))
+    );
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, removeFromCart, updateQuantity }}
+    >
       {children}
     </CartContext.Provider>
   );
