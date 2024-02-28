@@ -3,6 +3,7 @@ const bodyParser  = require("body-parser");
 const dotenv = require('dotenv');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors')
 
 dotenv.config();
 const app = express();
@@ -10,6 +11,8 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+
 
 //Product route
 app.use("/products", require("./routes/productRoutes"));
