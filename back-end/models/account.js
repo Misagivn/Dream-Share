@@ -1,56 +1,56 @@
-const mysql = require('mysql2');
+const { Sequelize, DataTypes } = require('sequelize');
+require('dotenv').config();
 
-const userSchema = new mysql.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    passwordHash: {
-        type: String,
-        required: true,
-    },
-    phone: {
-        type: String,
-        required: true,
-    },
-    isAdmin: {
-        type: Boolean,
-        default: false,
-    },
-    street: {
-        type: String,
-        default: ''
-    },
-    apartment: {
-        type: String,
-        default: ''
-    },
-    zip :{
-        type: String,
-        default: ''
-    },
-    city: {
-        type: String,
-        default: ''
-    },
-    country: {
-        type: String,
-        default: ''
-    }
-
+const sequelize = new Sequelize({
+  dialect: 'mysql',
+  host: process.env.MYSQL_HOST,
+  port: process.env.MYSQL_PORT,
+  username: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE
 });
 
-userSchema.virtual('id').get(function () {
-    return this._id.toHexString();
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  passwordHash: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  phone: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  street: {
+    type: DataTypes.STRING,
+    defaultValue: ''
+  },
+  apartment: {
+    type: DataTypes.STRING,
+    defaultValue: ''
+  },
+  zip: {
+    type: DataTypes.STRING,
+    defaultValue: ''
+  },
+  city: {
+    type: DataTypes.STRING,
+    defaultValue: ''
+  },
+  country: {
+    type: DataTypes.STRING,
+    defaultValue: ''
+  }
 });
 
-userSchema.set('toJSON', {
-    virtuals: true,
-});
-
-exports.User = mysql.model('User', userSchema);
-exports.userSchema = userSchema;
+module.exports = { User };

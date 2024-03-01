@@ -1,25 +1,26 @@
-const mysql = require('mysql2');
+const { Sequelize, DataTypes } = require('sequelize');
+require('dotenv').config();
 
-const categorySchema = mysql.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    icon: {
-        type: String,
-    },
-    color: { 
-        type: String,
-    }
-})
-
-
-categorySchema.virtual('id').get(function () {
-    return this._id.toHexString();
+const sequelize = new Sequelize({
+  dialect: 'mysql',
+  host: process.env.MYSQL_HOST,
+  port: process.env.MYSQL_PORT,
+  username: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE
 });
 
-categorySchema.set('toJSON', {
-    virtuals: true,
+const Category = sequelize.define('Category', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  icon: {
+    type: DataTypes.STRING
+  },
+  color: {
+    type: DataTypes.STRING
+  }
 });
 
-exports.Category = mysql.model('Category', categorySchema);
+module.exports = { Category };

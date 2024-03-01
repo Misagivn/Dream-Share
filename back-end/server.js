@@ -3,7 +3,7 @@ const bodyParser  = require("body-parser");
 const dotenv = require('dotenv');
 // const swaggerJsdoc = require('swagger-jsdoc');
 // const swaggerUi = require('swagger-ui-express');
-const cors = require('cors')
+const cors = require('cors');
 const errorHandler = require('./helpers/error-handle');
 
 
