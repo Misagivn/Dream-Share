@@ -83,10 +83,6 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <ThemeSwitch />
-        </NavbarItem>
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem className="hidden md:flex gap-2">
           <Button
             color="primary"
             variant="bordered"
@@ -95,6 +91,18 @@ export const Navbar = () => {
             href="/cart"
           >
             Cart
+          </Button>
+        </NavbarItem>
+        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
+        <NavbarItem className="hidden md:flex gap-2">
+          <Button
+            color="primary"
+            variant="bordered"
+            as={Link}
+            className="text-sm font-normal"
+            href="/signup"
+          >
+            Sign Up
           </Button>
           <Button
             color="primary"
