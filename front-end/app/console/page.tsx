@@ -1,15 +1,12 @@
 "use client";
 import { title } from "@/components/primitives";
 import {
-  Accordion,
-  AccordionItem,
-  Button,
   Card,
   CardHeader,
   Spacer,
   Image,
 } from "@nextui-org/react";
-import { link } from "fs";
+
 
 export default function ConsolePage() {
   
@@ -26,7 +23,7 @@ export default function ConsolePage() {
           </CardHeader>
           <Image
           removeWrapper
-          src="./428623122_2034934390214102_198876324500140266_n.jpg"
+          src="product_img.jpg"
           alt="Default Image"
           />
         </Card>
