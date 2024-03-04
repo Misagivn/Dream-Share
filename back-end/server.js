@@ -17,7 +17,11 @@ app.use(cors());
 //Product route
 app.use("/products", require("./routes/productRoutes"));
 //Order route
-app.use("/orders", require("./routes/orderRoutes.js"))
+app.use("/orders", require("./routes/orderRoutes.js"));
+//Type route
+app.use("/types", require("./routes/typeRoutes.js"));
+//Breand route
+app.use("/brands", require("./routes/brandRoutes.js"));
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
