@@ -1,4 +1,6 @@
 const Product = require("../models/product");
+const downloadUrl = require("../routes/productRoutes");
+
 
 exports.getAllProducts = async (req, res, next) => {
   try {
@@ -24,6 +26,8 @@ exports.createNewProducts = async (req, res, next) => {
       size,
       color,
       status,
+      price,
+      image
     } = req.body;
     let product = new Product(
       type_id,
@@ -36,9 +40,10 @@ exports.createNewProducts = async (req, res, next) => {
       quantity,
       size,
       color,
-      status
+      status,
+      price,
+      image 
     );
-
     product = await product.save();
     res.status(201).json({
       message: "Product has been created successfully!",
@@ -88,7 +93,8 @@ exports.updatedAProduct = async (req, res, next) => {
       quantity,
       size,
       color,
-      status
+      status,
+      image
     );
     product = await product.UpdatedAProduct(productId);
     res.status(201).json({ message: "Update Successfully!", data: product });
@@ -113,7 +119,7 @@ exports.getProductByName = async (req, res, next) => {
   try {
     let productName = req.params.productName;
     let [products, _] = await Product.findProductByName(productName);
-    res.status(200).json({ count: products.length, products});
+    res.status(200).json({ count: products.length, products });
   } catch (error) {
     console.log(error);
     next(error);

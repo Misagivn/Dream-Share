@@ -1,5 +1,5 @@
 const db = require("../config/db");
-
+const downloadUrl = require("../routes/productRoutes")
 class Product {
   constructor(
     type_id,
@@ -12,7 +12,9 @@ class Product {
     quantity,
     size,
     color,
-    status
+    status,
+    price
+    //image
   ) {
     this.type_id = type_id;
     this.brand_id = brand_id;
@@ -25,6 +27,8 @@ class Product {
     this.size = size;
     this.color = color;
     this.status = status;
+    this.price = price;
+    this.image = downloadUrl;
   }
   save() {
     let d = new Date();
@@ -47,7 +51,9 @@ class Product {
         size, 
         color, 
         status,
-        created_at
+        created_at,
+        price,
+        image
     ) VALUES (
         '${this.type_id}',
         '${this.brand_id}',
@@ -60,7 +66,9 @@ class Product {
         '${this.size}',
         '${this.color}',
         '${this.status}',
-        '${createdDate}'
+        '${createdDate}',
+        '${this.price}',
+        '${this.image}'
     )
     `;
     return db.execute(sql);
@@ -70,7 +78,7 @@ class Product {
     let sql = "SELECT * FROM product";
     return db.execute(sql);
   }
-  
+
   static findProductById(id) {
     let sql = `SELECT * FROM product WHERE id=${id}`;
     return db.execute(sql);
@@ -122,9 +130,9 @@ class Product {
     return db.execute(sql);
   }
 
-  static findProductByName(productName){
+  static findProductByName(productName) {
     let sql = `SELECT * FROM product WHERE name LIKE '%${productName}%'`;
-    return  db.execute(sql);
+    return db.execute(sql);
   }
 }
 
