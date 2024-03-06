@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -26,10 +28,16 @@ import {
   HeartFilledIcon,
   SearchIcon,
 } from "@/app/components/icons";
-
 import { Logo } from "@/app/components/icons";
+import { useEffect, useState } from "react";
 
 export const Navbar = () => {
+  const storedUser = localStorage.getItem("currentUser");
+  const user = JSON.parse(storedUser);
+  const handleSignOut = () => {
+    localStorage.removeItem("currentUser");
+    window.location.reload();
+  };
   const searchInput = (
     <Input
       aria-label="Search"
@@ -83,6 +91,17 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
+          {user && user.isAdmin && (
+            <Button
+              color="primary"
+              variant="bordered"
+              as={Link}
+              className="text-sm font-normal"
+              href="/console"
+            >
+              Console
+            </Button>
+          )}
           <Button
             color="primary"
             variant="bordered"
@@ -95,24 +114,42 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
         <NavbarItem className="hidden md:flex gap-2">
-          <Button
-            color="primary"
-            variant="bordered"
-            as={Link}
-            className="text-sm font-normal"
-            href="/signup"
-          >
-            Sign Up
-          </Button>
-          <Button
-            color="primary"
-            variant="solid"
-            as={Link}
-            className="text-sm font-normal"
-            href="/signin"
-          >
-            Sign In
-          </Button>
+          {!user && (
+            <>
+              <Button
+                color="primary"
+                variant="bordered"
+                as={Link}
+                className="text-sm font-normal"
+                href="/signup"
+              >
+                Sign Up
+              </Button>
+              <Button
+                color="primary"
+                variant="solid"
+                as={Link}
+                className="text-sm font-normal"
+                href="/signin"
+              >
+                Sign In
+              </Button>
+            </>
+          )}
+          {user && (
+            <>
+              <h1>{user.email}</h1>
+              <Button
+                color="primary"
+                variant="solid"
+                as={Link}
+                className="text-sm font-normal"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
+            </>
+          )}
         </NavbarItem>
       </NavbarContent>
 

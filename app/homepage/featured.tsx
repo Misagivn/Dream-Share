@@ -22,19 +22,20 @@ export default function Featured() {
     axios
       .get("http://localhost:5000/products/", {})
       .then(function (res) {
-        console.log(res.data.products);
+        console.log(data);
         setProduct(res.data.products);
       })
       .catch(function (err) {
         console.log(err);
       });
   }, []);
-
+  let firstProduct = product[0];
+  console.log(firstProduct);
   return (
-    <div>
+    <div key={firstProduct}>
       <FeaturedProduct>
         <div>
-          <Title></Title>
+          <Title>{firstProduct}</Title>
           <p></p>
           <ButtonSpacing>
             <Button color="primary" variant="bordered">
@@ -49,7 +50,7 @@ export default function Featured() {
             </Button>
           </ButtonSpacing>
         </div>
-        <Image alt="NextUI hero Image" src=""/>
+        <Image alt="NextUI hero Image" src="" />
       </FeaturedProduct>
     </div>
   );

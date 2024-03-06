@@ -24,3 +24,19 @@ export const Header = styled.div`
     justify-content: space-between;
     align-items: baseline;
 `
+
+export const ProductCard = styled.div`
+  border: 1px solid #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const ProductGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1em;
+`;

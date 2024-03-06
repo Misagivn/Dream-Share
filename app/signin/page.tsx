@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useRouter } from 'next/router';
 import {
   Container,
   Formcontrol,
@@ -55,7 +55,9 @@ const SignInPage: React.FC = () => {
 
       if (user) {
         console.log("Login successful");
-        // Here you might want to do something with the user, like saving the user token
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        console.log(user);
+        window.location.reload();
       } else {
         console.log("Login failed");
       }

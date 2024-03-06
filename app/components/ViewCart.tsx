@@ -32,7 +32,7 @@ const ViewCart: React.FC = () => {
               <H2 style={{width: "715px"}}>Cart</H2>
               <h2
                 style={{
-                  backgroundColor: "#303034",
+                  border: "2px solid #303034",
                   padding: "7px 7px 7px 20px",
                   width: "715px",
                 }}
@@ -42,7 +42,7 @@ const ViewCart: React.FC = () => {
             </Col7>
             {cartItems.map((item, index) => (
               <Col7 key={index}>
-                <table style={{ border: "2px solid #303034", width: "715px" }}>
+                <table style={{ border: "1px solid #303034", width: "715px" }}>
                   <td
                     width={140}
                     className="align-top"
