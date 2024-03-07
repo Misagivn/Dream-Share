@@ -8,7 +8,7 @@ const cors = require('cors')
 dotenv.config();
 const app = express();
 
-app.use(express.json());
+app.use(express.json({limit: '10mb'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());

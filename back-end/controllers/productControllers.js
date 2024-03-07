@@ -27,7 +27,6 @@ exports.createNewProducts = async (req, res, next) => {
       color,
       status,
       price,
-      image
     } = req.body;
     let product = new Product(
       type_id,
@@ -42,7 +41,6 @@ exports.createNewProducts = async (req, res, next) => {
       color,
       status,
       price,
-      image 
     );
     product = await product.save();
     res.status(201).json({

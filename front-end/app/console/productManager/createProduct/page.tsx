@@ -80,33 +80,46 @@ export default function CategoriesPage() {
     return /^\+?[1-9]\d*$/.test(value);
   }
   //
-  let typeId ="";
+  let typeId = "";
   const handleTypeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(e.target.value);
-    console.log("Type ID: "+e.target.value)
+    console.log("Type ID: " + e.target.value);
   };
-  
+
   const handleBrandSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBrand(e.target.value);
-    console.log("Brand ID: " +e.target.value)
+    console.log("Brand ID: " + e.target.value);
   };
   const handleCategorySelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(e.target.value);
-    console.log("Category ID: " + e.target.value)
+    console.log("Category ID: " + e.target.value);
   };
   const checkQuantiyValid = React.useMemo(() => {
-    if (parseInt(productQuantity)> 0 && isPositiveInteger(productQuantity)) 
+    if (parseInt(productQuantity) > 0 && isPositiveInteger(productQuantity))
       return false;
-  }, [productQuantity])
+  }, [productQuantity]);
   // Function to handle image selection
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedImage, setSelectedImage] = useState([])
   function handleImageSelection(event: { target: { files: any[] } }) {
     const file = event.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
+      setSelectedFile(file);
       setSelectedImage(imageUrl);
+    } else {
+      console.log("No File Selected");
     }
   }
+  // function handleImageSelection(event: { target: { files: any[] } }) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     setSelectedImage(file);
+  //     console.log(file);
+  //   } else {
+  //     console.log("No File Selected");
+  //   }
+  // }
   //Function tạo data mới
   const newProductData = {
     type_id: selectedType,
@@ -123,18 +136,38 @@ export default function CategoriesPage() {
     updated_at: "",
     created_at: "",
     price: productPrice,
-    image: "",
   };
-  function createNewProduct(newProductData: any) {
+  function createNewProduct() {
+    const formData = new FormData();
+      formData.append("type_id", selectedType);
+      formData.append("brand_id", selectedBrand);
+      formData.append("cate_id", selectedCategory);
+      formData.append("code", productCode);
+      formData.append("name", productName);
+      formData.append("description", productDescription);
+      formData.append("highlight", isHighlighted ? 1 : 0);
+      formData.append("quantity", productQuantity);
+      formData.append("size", productSize);
+      formData.append("color", productColor);
+      formData.append("status", productStatus);
+      formData.append("price", productPrice);
+      formData.append("image", selectedFile);
+
+
     axios
-      .post(`${baseURL}/products`, newProductData)
+      .post(`${baseURL}/products`, formData ,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      }
+      ,newProductData)
       .then(function (res) {
         console.log("Create new success!!!");
-        console.log(JSON.stringify(res.data));
+        console.log(res.data);
         // Notify user
-        alert("Product created successfully!");
+        alert("Product created successfully!. Closing this tab");
         // Close tab
-        window.close();
+        //window.close();
       })
       .catch(function (err) {
         console.log(err);
@@ -269,7 +302,7 @@ export default function CategoriesPage() {
       <Button
         radius="full"
         className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
-        onClick={() => createNewProduct(newProductData)}
+        onClick={() => createNewProduct()}
       >
         Create
       </Button>
