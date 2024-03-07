@@ -37,6 +37,11 @@ export default function ConsolePage() {
             <p className="text-small text-lime-300 text-left uppercase font-bold">Staff Manager Tool</p>
           </CardHeader>
         </Card>
+        <Card shadow="sm" isPressable onPress={() => window.open(`http://www.google.com`)} className="h-[200px] max-w-[200px]">
+          <CardHeader className="absoutule !item-start z-10 top-1">
+            <p className="text-small text-lime-300 text-left uppercase font-bold">Brand Manager Tool</p>
+          </CardHeader>
+        </Card>
       </div>
     </div>
   );

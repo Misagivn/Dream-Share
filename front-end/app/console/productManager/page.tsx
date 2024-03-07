@@ -25,7 +25,6 @@ import {
   Button,
   DropdownItem,
 } from "@nextui-org/react";
-import { Axios } from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { PlusIcon } from "./PlusIcon";
 import { SearchIcon } from "./SearchIcon";

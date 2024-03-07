@@ -67,3 +67,35 @@ exports.deleteOrder = async  (req, res, next) => {
     next(error);
   }
 }
+exports.UpdateAnOrder = async (req, res, next) => {
+  try {
+    let orderId = req.params.id;
+    let {
+      account_id,
+      account_name,
+      account_email,
+      account_phone,
+      shipping_address,
+      created_at,
+      payment_method,
+      total_price,
+      status,
+    } = req.body;
+    let order = new Order(
+      account_id,
+      account_name,
+      account_email,
+      account_phone,
+      shipping_address,
+      created_at,
+      payment_method,
+      total_price,
+      status
+    );
+    order = await order.UpdatedAnOrder(orderId);
+    res.status(201).json({ message: "Update Successfully!", data: order });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}

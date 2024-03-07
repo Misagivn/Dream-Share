@@ -14,41 +14,7 @@ let downloadUrl ="";
 router
   .route("/")
   .get(productControllers.getAllProducts)
-  .post(
-    upload.single("image"),
-    (req, res, next) => {
-      if (!req.file) {
-        return res.status(400).send("Error: No files found");
-      }
-      const blob = firebase.bucket.file(req.file.originalname);
-      const blobWriter = blob.createWriteStream({
-        metadata: {
-          contentType: req.file.mimetype,
-        },
-      });
-      blobWriter.on("error", (err) => {
-        console.log(err);
-      });
-      blobWriter.on("finish", () => {
-
-        blob.getSignedUrl({
-          action: "read",
-          expires: "03-03-2025"
-        }).then(signedUrls =>{
-          downloadUrl = signedUrls[0];
-          console.log("URL: ", downloadUrl)
-          console.log(test)
-          module.exports = downloadUrl;
-        }).catch(err =>{
-          console.error('Error generating signed URL', err)
-        })
-        res.status(200).send(`File uploaded.`);
-        productControllers.createNewProducts(req, res, next);
-      });
-      blobWriter.end(req.file.buffer);
-    },
-    productControllers.createNewProducts
-  );
+  .post(productControllers.createNewProducts);
 
 router
   .route("/:id")

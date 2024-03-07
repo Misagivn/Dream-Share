@@ -13,14 +13,14 @@ class Order {
     status
   ) {
     (this.account_id = account_id),
-      (this.account_name = account_name),
-      (this.account_email = account_email),
-      (this.account_phone = account_phone),
-      (this.shipping_address = shipping_address),
-      (this.created_at = created_at),
-      (this.payment_method = payment_method),
-      (this.total_price = total_price),
-      (this.status = status);
+    (this.account_name = account_name),
+    (this.account_email = account_email),
+    (this.account_phone = account_phone),
+    (this.shipping_address = shipping_address),
+    (this.created_at = created_at),
+    (this.payment_method = payment_method),
+    (this.total_price = total_price),
+    (this.status = status);
   }
 
   save() {
@@ -69,6 +69,41 @@ class Order {
 
   static deleteOrder(id) {
     let sql = `DELETE  FROM order1 WHERE id=${id}`;
+    return db.execute(sql);
+  }
+
+  UpdatedAnOrder(id) {
+    let d = new Date();
+    let yyyy = d.getFullYear();
+    let mm = d.getMonth() + 1;
+    let dd = d.getDate();
+
+    let updatedDate = `${yyyy}-${mm}-${dd}`;
+
+    let sql = `
+    UPDATE order1 (
+      account_id, 
+      account_name, 
+      account_email, 
+      account_phone,
+      shipping_address,
+      created_at,
+      payment_method,
+      total_price,
+      status
+    ) SET (
+      '${this.account_id}',
+      '${this.account_name}',
+      '${this.account_email}',
+      '${this.account_phone}',
+      '${this.shipping_address}',
+      '${updatedDate}',
+      '${this.payment_method}',
+      '${this.total_price}',
+      '${this.status}'
+    ) WHERE id = ${id}
+    `;
+
     return db.execute(sql);
   }
 }

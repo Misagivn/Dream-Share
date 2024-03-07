@@ -20,8 +20,12 @@ app.use("/products", require("./routes/productRoutes"));
 app.use("/orders", require("./routes/orderRoutes.js"));
 //Type route
 app.use("/types", require("./routes/typeRoutes.js"));
-//Breand route
+//Brand route
 app.use("/brands", require("./routes/brandRoutes.js"));
+//Staff route
+app.use("/staffs", require("./routes/staffRoutes.js"));
+//Category route
+app.use("/categories", require("./routes/categoryRoutes.js"))
 
 app.use((err, req, res, next) => {
   console.log(err.stack);

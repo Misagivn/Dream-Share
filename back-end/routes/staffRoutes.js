@@ -1,9 +1,9 @@
 const express = require('express');
-const brandControllers = require("../controllers/brandControllers.js");
+const staffControllers = require("../controllers/staffControllers.js");
 const router = express.Router();
 
 router
   .route("/")
-  .get(brandControllers.getAllBrands)
+  .get(staffControllers.getAllStaffs)
 
 module.exports = router;

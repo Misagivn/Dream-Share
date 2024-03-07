@@ -10,6 +10,7 @@ router
 router
 .route("/:id")
 .get(orderControllers.getOrderById)
+.put(orderControllers.UpdateAnOrder)
 .delete(orderControllers.deleteOrder)
 
 module.exports = router;
