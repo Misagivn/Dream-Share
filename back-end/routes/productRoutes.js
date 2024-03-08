@@ -7,10 +7,6 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { files: 10 }, // Giới hạn chỉ cho phép tải lên 3 file
 });
-const test = require("../controllers/productControllers.js");
-
-let downloadUrl = "";
-
 router
   .route("/")
   .get(productControllers.getAllProducts)
@@ -36,13 +32,15 @@ router
         .then((signedUrls) => {
           downloadUrl = signedUrls[0];
           console.log("URL: ", downloadUrl);
-          console.log(test);
+          productControllers.createNewProducts(req, res, next, downloadUrl);
+          //exportDownloadUrl(downloadUrlString);
+          console.log("URL lan 2: ", downloadUrlString);
         })
         .catch((err) => {
           console.error("Error generating signed URL", err);
         });
+      
       res.status(200).send(`File uploaded.`);
-      productControllers.createNewProducts(req, res, next);
     });
     blobWriter.end(req.file.buffer);
   });
@@ -54,5 +52,10 @@ router
   .delete(productControllers.deleteProduct);
 
 router.route("/search/:productName").get(productControllers.getProductByName);
+
+// function exportDownloadUrl(downloadUrlString) {
+//   module.exports.downloadUrlString = downloadUrlString;
+//   console.log("Co la string k: " + downloadUrlString)
+// }
 
 module.exports = router;

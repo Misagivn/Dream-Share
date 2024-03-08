@@ -1,6 +1,6 @@
 const Product = require("../models/product");
-const downloadUrl = require("../routes/productRoutes");
-
+// const { downloadUrlString } = require("../routes/brandRoutes.js");
+// const imageUrl = downloadUrlString;
 
 exports.getAllProducts = async (req, res, next) => {
   try {
@@ -12,7 +12,7 @@ exports.getAllProducts = async (req, res, next) => {
   }
 };
 
-exports.createNewProducts = async (req, res, next) => {
+exports.createNewProducts = async (req, res, next, downloadUrlString) => {
   try {
     let {
       type_id,
@@ -27,6 +27,7 @@ exports.createNewProducts = async (req, res, next) => {
       color,
       status,
       price,
+      image
     } = req.body;
     let product = new Product(
       type_id,
@@ -41,8 +42,10 @@ exports.createNewProducts = async (req, res, next) => {
       color,
       status,
       price,
+      image = downloadUrlString
     );
     product = await product.save();
+    console.log("URL lan 3: " + downloadUrlString);
     res.status(201).json({
       message: "Product has been created successfully!",
       data: product,
@@ -91,8 +94,7 @@ exports.updatedAProduct = async (req, res, next) => {
       quantity,
       size,
       color,
-      status,
-      image
+      status
     );
     product = await product.UpdatedAProduct(productId);
     res.status(201).json({ message: "Update Successfully!", data: product });

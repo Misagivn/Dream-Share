@@ -111,15 +111,6 @@ export default function CategoriesPage() {
       console.log("No File Selected");
     }
   }
-  // function handleImageSelection(event: { target: { files: any[] } }) {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     setSelectedImage(file);
-  //     console.log(file);
-  //   } else {
-  //     console.log("No File Selected");
-  //   }
-  // }
   //Function tạo data mới
   const newProductData = {
     type_id: selectedType,
@@ -152,7 +143,6 @@ export default function CategoriesPage() {
       formData.append("status", productStatus);
       formData.append("price", productPrice);
       formData.append("image", selectedFile);
-
 
     axios
       .post(`${baseURL}/products`, formData ,{

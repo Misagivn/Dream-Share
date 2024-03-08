@@ -1,5 +1,5 @@
 const db = require("../config/db");
-const downloadUrl = require("../routes/productRoutes")
+
 class Product {
   constructor(
     type_id,
@@ -13,8 +13,8 @@ class Product {
     size,
     color,
     status,
-    price
-    //image
+    price,
+    image
   ) {
     this.type_id = type_id;
     this.brand_id = brand_id;
@@ -28,7 +28,7 @@ class Product {
     this.color = color;
     this.status = status;
     this.price = price;
-    this.image = downloadUrl;
+    this.image = image;
   }
   save() {
     let d = new Date();
@@ -105,7 +105,8 @@ class Product {
         size, 
         color, 
         status,
-        updated_at
+        updated_at,
+        image
     ) SET (
         '${this.type_id}',
         '${this.brand_id}',
