@@ -46,6 +46,7 @@ export default function ConsolePage() {
               Staff Manager Tool
             </p>
           </CardHeader>
+          <Image removeWrapper src="images.png" alt="Default Image" />
         </Card>
       </div>
     </div>

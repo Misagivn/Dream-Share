@@ -46,7 +46,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 export default function StaffManager() {
   //Các biến connect + get data từ API
-  const baseURL = "http://localhost:3000";
+  const baseURL = "http://localhost:5000";
   const axios = require("axios");
   const [staff, setStaff] = useState([]); //Tạo state tất cả staff
   //Setup các biến để pagination
