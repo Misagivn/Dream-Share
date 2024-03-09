@@ -3,8 +3,8 @@ require("dotenv").config();
 
 const pool = mySQL.createPool({
   host: "localhost",
-  user: "sa",
-  password: "123456",
+  user: "root",
+  password: "12345",
   database: "dream_share",
   //   host: process.env.MYSQL_HOST,
   //   user: process.env.MYSQL_USERNAME,
