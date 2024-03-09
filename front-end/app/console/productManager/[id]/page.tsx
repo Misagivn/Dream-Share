@@ -12,14 +12,16 @@ import {
 import React, { useEffect, useState } from "react";
 import { CameraIcon } from "./CameraIcon";
 
+export default function EditProductsPage({ params }) {
+  const currentId = params.id;
 
-export default function CreateNewProductsPage() {
   const baseURL = "http://localhost:5000";
   const axios = require("axios");
   const [types, setType] = useState([]);
   const [brands, setBrand] = useState([]);
+  const [productData, setProductData] = useState([]);
   const [categories, setCategory] = useState([]);
-  const [productName, setProductName] = useState("PRODUCT NAME HERE");
+  const [productName, setProductName] = useState([]);
   const [productCode, setProductCode] = useState([]);
   const [productDescription, setProductDescription] = useState([]);
   const [isHighlighted, setIsHighlighted] = useState(false);
@@ -69,6 +71,27 @@ export default function CreateNewProductsPage() {
         console.log(err);
       });
   }, []);
+  //fetch product data theo id
+  useEffect(() => {
+    axios
+      .get(`${baseURL}/products/${currentId}`)
+      .then((res) => {
+        console.log(res.data.product);
+        setProductName(res.data.product.name);
+        setProductImage(res.data.product.image);
+        setProductDescription(res.data.product.description);
+        setProductCode(res.data.product.code);
+        setProductQuantity(res.data.product.quantity);
+        setProductSize(res.data.product.size);
+        setProductColor(res.data.product.color);
+        setProductPrice(res.data.product.price);
+        setSelectedType(res.data.product.type_id);
+        console.log(selectedType);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   // Hàm kiểm tra tên sản phẩm not null
   const checkNameValid = React.useMemo(() => {
     if (productName === "") return true;
@@ -102,7 +125,7 @@ export default function CreateNewProductsPage() {
   }, [productQuantity]);
   // Function to handle image selection
   const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedImage, setSelectedImage] = useState([])
+  const [selectedImage, setSelectedImage] = useState([]);
   function handleImageSelection(event: { target: { files: any[] } }) {
     const file = event.target.files[0];
     if (file) {
@@ -132,27 +155,31 @@ export default function CreateNewProductsPage() {
   };
   function createNewProduct() {
     const formData = new FormData();
-      formData.append("type_id", selectedType);
-      formData.append("brand_id", selectedBrand);
-      formData.append("cate_id", selectedCategory);
-      formData.append("code", productCode);
-      formData.append("name", productName);
-      formData.append("description", productDescription);
-      formData.append("highlight", isHighlighted ? 1 : 0);
-      formData.append("quantity", productQuantity);
-      formData.append("size", productSize);
-      formData.append("color", productColor);
-      formData.append("status", productStatus);
-      formData.append("price", productPrice);
-      formData.append("image", selectedFile);
+    formData.append("type_id", selectedType);
+    formData.append("brand_id", selectedBrand);
+    formData.append("cate_id", selectedCategory);
+    formData.append("code", productCode);
+    formData.append("name", productName);
+    formData.append("description", productDescription);
+    formData.append("highlight", isHighlighted ? 1 : 0);
+    formData.append("quantity", productQuantity);
+    formData.append("size", productSize);
+    formData.append("color", productColor);
+    formData.append("status", productStatus);
+    formData.append("price", productPrice);
+    formData.append("image", selectedFile);
 
     axios
-      .post(`${baseURL}/products`, formData ,{
-        headers: {
-          "Content-Type": "multipart/form-data",
-        }
-      }
-      ,newProductData)
+      .post(
+        `${baseURL}/products`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+        newProductData
+      )
       .then(function (res) {
         console.log("Create new success!!!");
         console.log(res.data);
@@ -169,6 +196,7 @@ export default function CreateNewProductsPage() {
   return (
     <div>
       <h1 className="text-4xl">Create New Product</h1>
+      <h2>{currentId}</h2>
       <Card>
         <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5 pl-5">
           <Button color="success" endContent={<CameraIcon />}>
@@ -186,10 +214,7 @@ export default function CreateNewProductsPage() {
             width={480}
             height={300}
             alt="NextUI hero Image"
-            src={
-              selectedImage ||
-              "https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-            }
+            src={selectedImage !== "" ? selectedImage : productImage}
           />
         </div>
         <Spacer y="10px" />
@@ -209,6 +234,7 @@ export default function CreateNewProductsPage() {
               type="code"
               label="Product code"
               placeholder="Enter product code"
+              value={productCode}
               onValueChange={(value) => setProductCode(value)}
             />
           </div>
@@ -219,6 +245,7 @@ export default function CreateNewProductsPage() {
             placeholder="Select furniture Type"
             isRequired
             className=""
+            defaultSelectedKeys={JSON.stringify(selectedType)}
             onChange={handleTypeSelect}
           >
             {(type) => <SelectItem key={type.id}>{type.name}</SelectItem>}
@@ -252,6 +279,7 @@ export default function CreateNewProductsPage() {
             type="Description"
             label="Product Description"
             placeholder="Enter product description"
+            value={productDescription}
             onValueChange={(value) => setProductDescription(value)}
           />
           <Spacer y="10px" />
@@ -267,18 +295,21 @@ export default function CreateNewProductsPage() {
               label="Product Quantity"
               isInvalid={checkQuantiyValid}
               placeholder="Enter product quantity"
+              value={productQuantity}
               onValueChange={(value) => setProductQuantity(value)}
             />
             <Input
               type="size"
               label="Product size"
               placeholder="Enter product size"
+              value={productSize}
               onValueChange={(value) => setProductSize(value)}
             />
             <Input
               type="color"
               label="Product Color"
               placeholder="Enter product color"
+              value={productColor}
               onValueChange={(value) => setProductColor(value)}
             />
             <Input
@@ -287,6 +318,7 @@ export default function CreateNewProductsPage() {
               isRequired={checkPriceValid}
               errorMessage={checkPriceValid && "Please enter a valid number"}
               placeholder="Enter product price"
+              value={productPrice}
               onValueChange={(value) => setProductPrice(value)}
             />
           </div>

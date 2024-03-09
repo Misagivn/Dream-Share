@@ -1,5 +1,4 @@
 "use client";
-import { title } from "@/components/primitives";
 import {
   Accordion,
   AccordionItem,
@@ -35,8 +34,9 @@ import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import React from "react";
-import { useNavigate } from 'react-router-dom';
-
+import { Link, Route, Router, Routes } from "react-router-dom";
+import { EditProductPage } from "./[id]/page"
+import { useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   Active: "success",
@@ -60,9 +60,13 @@ export default function ProductManager() {
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
-  const thisPageUrl = `http://localhost:3000/console/productManager`
-  const goToCreateProduct = `${thisPageUrl}/createProduct`
+  const thisPageUrl = `http://localhost:3000/console/productManager`;
+  const goToCreateProduct = `${thisPageUrl}/createProduct`;
+  //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
+  const editProduct = (productId: any) => {
+    window.location.href = `${thisPageUrl}/${productId}`
+  }
   const deleteProduct = (productId: any) => {
     axios
       .delete(`${baseURL}/products/${productId}`)
@@ -130,9 +134,12 @@ export default function ProductManager() {
                 </span>
               </Tooltip>
               <Tooltip content="Edit Product">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                  <EditIcon />
-                </span>
+                  <span 
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  onClick={() => editProduct(productdata.id)}
+                  >
+                    <EditIcon />
+                  </span>
               </Tooltip>
               <Tooltip color="danger" content="Delete Product">
                 <span
@@ -287,54 +294,59 @@ export default function ProductManager() {
 
   //Render lên page
   return (
-    <div className="">
-      <Table
-        aria-label="Example table with custom cells"
-        topContent={topContent}
-        bottomContent={
-          <div className="flex w-full justify-center">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="secondary"
-              page={page}
-              total={pages}
-              onChange={(page) => setPage(page)}
-            />
-          </div>
-        }
-        checkboxesProps={{
-          classNames: {
-            wrapper:
-              "after:bg-foreground after:text-background text-background",
-          },
-        }}
-        classNames={{
-          wrapper: "min-h-[222px]",
-        }}
-      >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody items={items} className="justify-center">
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
+    // <Router>
+    //   <Routes>
+    //     <Route path="http://localhost:3000/console/productManager:id" element={<EditProductPage/>}/>
+        <div className="">
+          <Table
+            aria-label="Example table with custom cells"
+            topContent={topContent}
+            bottomContent={
+              <div className="flex w-full justify-center">
+                <Pagination
+                  isCompact
+                  showControls
+                  showShadow
+                  color="secondary"
+                  page={page}
+                  total={pages}
+                  onChange={(page) => setPage(page)}
+                />
+              </div>
+            }
+            checkboxesProps={{
+              classNames: {
+                wrapper:
+                  "after:bg-foreground after:text-background text-background",
+              },
+            }}
+            classNames={{
+              wrapper: "min-h-[222px]",
+            }}
+          >
+            <TableHeader columns={columns}>
+              {(column) => (
+                <TableColumn
+                  key={column.uid}
+                  align={column.uid === "actions" ? "center" : "start"}
+                  allowsSorting={column.sortable}
+                >
+                  {column.name}
+                </TableColumn>
               )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+            </TableHeader>
+            <TableBody items={items} className="justify-center">
+              {(item) => (
+                <TableRow key={item.id}>
+                  {(columnKey) => (
+                    <TableCell>{renderCell(item, columnKey)}</TableCell>
+                  )}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+    //   </Routes>
+    // </Router>
   );
 }
