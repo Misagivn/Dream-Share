@@ -37,6 +37,7 @@ import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Head from "next/head";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   Active: "success",

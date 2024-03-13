@@ -25,7 +25,7 @@ export function getStaff() {
 const columns = [
   { name: "ID", uid: "id", sortable: true },
   { name: "NAME", uid: "name", sortable: true },
-  { name: "DESCRIPTION", uid: "description", sortable: false },
+  { name: "ROLE NAME", uid: "role_name", sortable: true },
   { name: "STATUS", uid: "status", sortable: true },
 ];
 
