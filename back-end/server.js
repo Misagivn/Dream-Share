@@ -1,11 +1,11 @@
 const express  = require('express');
 const bodyParser  = require("body-parser");
 const dotenv = require('dotenv');
-// const swaggerJsdoc = require('swagger-jsdoc');
-// const swaggerUi = require('swagger-ui-express');
-const cors = require('cors');
-const errorHandler = require('./helpers/error-handle');
-
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const cors = require('cors')
+const config = require('./config/db.js');
+const userRoutes = require('./routes/authRoutes.js');
 
 dotenv.config();
 const app = express();
@@ -15,14 +15,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-//Routes
-app.use("accounts", require("./routes/accounts"));
-app.use("categories", require("./routes/categories"));
+app.use(session({
+  secret: config.sessionSecret,
+  resave: true,
+  saveUninitialized: true
+}));
 
-// //Product route
+//Product route
 // app.use("/products", require("./routes/productRoutes"));
 // //Order route
-// app.use("/orders", require("./routes/orderRoutes.js"))
+// app.use("/orders", require("./routes/orderRoutes.js"));
+// //Type route
+// app.use("/types", require("./routes/typeRoutes.js"));
+// //Breand route
+// app.use("/brands", require("./routes/brandRoutes.js"));
+
+app.use('/users', userRoutes);
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
@@ -34,8 +42,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
 
+
+
+const PORT = process.env.PORT || 5000;
 
 // app.use("/swagger", swaggerUi.serve, swaggerUi.setup(api));
 app.listen(PORT, () => {
