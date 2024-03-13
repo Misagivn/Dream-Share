@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { CameraIcon } from "./CameraIcon";
+import { data } from "autoprefixer";
 
 export default function EditProductsPage({ params }) {
   const currentId = params.id;
@@ -19,22 +20,23 @@ export default function EditProductsPage({ params }) {
   const axios = require("axios");
   const [types, setType] = useState([]);
   const [brands, setBrand] = useState([]);
-  const [productData, setProductData] = useState([]);
   const [categories, setCategory] = useState([]);
   const [productName, setProductName] = useState([]);
   const [productCode, setProductCode] = useState([]);
   const [productDescription, setProductDescription] = useState([]);
   const [isHighlighted, setIsHighlighted] = useState(false);
+  let defaultHighLight = isHighlighted.toString();
+  console.log(defaultHighLight);
   const [productQuantity, setProductQuantity] = useState([]);
   const [productSize, setProductSize] = useState([]);
   const [productColor, setProductColor] = useState([]);
-  const [productStatus, setProductStatus] = useState("Active");
+  const [productStatus, setProductStatus] = useState([]);
   const [productPrice, setProductPrice] = useState([]);
-  const [productImage, setProductImage] = useState([]);
   //State cho selected và inputdata
   const [selectedType, setSelectedType] = React.useState<string>("");
   const [selectedBrand, setSelectedBrand] = React.useState<string>("");
   const [selectedCategory, setSelectedCategory] = React.useState<string>("");
+
   //fetch type từ API
   useEffect(() => {
     axios
@@ -76,17 +78,22 @@ export default function EditProductsPage({ params }) {
     axios
       .get(`${baseURL}/products/${currentId}`)
       .then((res) => {
+        const dataFetch = res.data.product;
         console.log(res.data.product);
-        setProductName(res.data.product.name);
-        setProductImage(res.data.product.image);
-        setProductDescription(res.data.product.description);
-        setProductCode(res.data.product.code);
-        setProductQuantity(res.data.product.quantity);
-        setProductSize(res.data.product.size);
-        setProductColor(res.data.product.color);
-        setProductPrice(res.data.product.price);
-        setSelectedType(res.data.product.type_id);
-        console.log(selectedType);
+        setProductName(dataFetch.name);
+        setSelectedImage(dataFetch.image);
+        setSelectedFile(dataFetch.image)
+        setProductDescription(dataFetch.description);
+        setProductCode(dataFetch.code);
+        setProductQuantity(dataFetch.quantity);
+        setProductSize(dataFetch.size);
+        setProductColor(dataFetch.color);
+        setProductPrice(dataFetch.price);
+        setSelectedType(dataFetch.type_id);
+        setSelectedBrand(dataFetch.brand_id)
+        setSelectedCategory(dataFetch.cate_id)
+        setProductStatus(dataFetch.status);
+        setIsHighlighted(dataFetch.highlight);
       })
       .catch((err) => {
         console.log(err);
@@ -136,6 +143,11 @@ export default function EditProductsPage({ params }) {
       console.log("No File Selected");
     }
   }
+  const handleStatusSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setProductStatus(e.target.value);
+    console.log("Status: " + e.target.value);
+  }
+
   //Function tạo data mới
   const newProductData = {
     type_id: selectedType,
@@ -153,7 +165,7 @@ export default function EditProductsPage({ params }) {
     created_at: "",
     price: productPrice,
   };
-  function createNewProduct() {
+  function updateProduct() {
     const formData = new FormData();
     formData.append("type_id", selectedType);
     formData.append("brand_id", selectedBrand);
@@ -167,11 +179,16 @@ export default function EditProductsPage({ params }) {
     formData.append("color", productColor);
     formData.append("status", productStatus);
     formData.append("price", productPrice);
-    formData.append("image", selectedFile);
-
+    if (selectedFile === null){
+      formData.append("image", selectedImage);
+    } else {
+      formData.append("image", selectedFile);
+    }
+    console.log("Do update")
+    console.log(newProductData)
     axios
-      .post(
-        `${baseURL}/products`,
+      .put(
+        `${baseURL}/products/${currentId}`,
         formData,
         {
           headers: {
@@ -184,7 +201,7 @@ export default function EditProductsPage({ params }) {
         console.log("Create new success!!!");
         console.log(res.data);
         // Notify user
-        alert("Product created successfully!. Closing this tab");
+        alert("Product Updated successfully!. Closing this tab");
         // Close tab
         window.close();
       })
@@ -196,7 +213,6 @@ export default function EditProductsPage({ params }) {
   return (
     <div>
       <h1 className="text-4xl">Create New Product</h1>
-      <h2>{currentId}</h2>
       <Card>
         <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5 pl-5">
           <Button color="success" endContent={<CameraIcon />}>
@@ -214,7 +230,7 @@ export default function EditProductsPage({ params }) {
             width={480}
             height={300}
             alt="NextUI hero Image"
-            src={selectedImage !== "" ? selectedImage : productImage}
+            src={selectedImage}
           />
         </div>
         <Spacer y="10px" />
@@ -245,7 +261,7 @@ export default function EditProductsPage({ params }) {
             placeholder="Select furniture Type"
             isRequired
             className=""
-            defaultSelectedKeys={JSON.stringify(selectedType)}
+            defaultSelectedKeys={selectedType.toString()}
             onChange={handleTypeSelect}
           >
             {(type) => <SelectItem key={type.id}>{type.name}</SelectItem>}
@@ -257,6 +273,7 @@ export default function EditProductsPage({ params }) {
             placeholder="Select furniture Brand"
             isRequired
             className=""
+            defaultSelectedKeys={selectedBrand.toString()}
             onChange={handleBrandSelect}
           >
             {(brand) => <SelectItem key={brand.id}>{brand.name}</SelectItem>}
@@ -268,6 +285,7 @@ export default function EditProductsPage({ params }) {
             placeholder="Select furniture Category"
             isRequired
             className=""
+            defaultSelectedKeys={selectedCategory.toString()}
             onChange={handleCategorySelect}
           >
             {(category) => (
@@ -275,17 +293,37 @@ export default function EditProductsPage({ params }) {
             )}
           </Select>
           <Spacer y="10px" />
-          <Input
-            type="Description"
-            label="Product Description"
-            placeholder="Enter product description"
-            value={productDescription}
-            onValueChange={(value) => setProductDescription(value)}
-          />
+          <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+            <Input
+              type="Description"
+              label="Product Description"
+              placeholder="Enter product description"
+              value={productDescription}
+              onValueChange={(value) => setProductDescription(value)}
+            />
+            <Select
+              label="Product Status"
+              placeholder="Select product status"
+              isRequired
+              defaultSelectedKeys={productStatus}
+              className=""
+              onChange={handleStatusSelect}
+            >
+              <SelectItem value="Active" key={"Active"} color="success">
+                Active
+              </SelectItem>
+              <SelectItem value="Paused" key={"Paused"} color="warning">
+                Paused
+              </SelectItem>
+              <SelectItem value="Cancel" key={"Cancel"} color="danger">
+                Cancel
+              </SelectItem>
+            </Select>
+          </div>
           <Spacer y="10px" />
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
             <Switch
-              defaultSelected={isHighlighted}
+              defaultValue={isHighlighted}
               onChange={(value) => setIsHighlighted(value)}
             >
               High Light
@@ -328,9 +366,9 @@ export default function EditProductsPage({ params }) {
       <Button
         radius="full"
         className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
-        onClick={() => createNewProduct()}
+        onClick={() => updateProduct()}
       >
-        Create
+        Update
       </Button>
     </div>
   );

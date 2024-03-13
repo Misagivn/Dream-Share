@@ -93,34 +93,21 @@ class Product {
     let updatedDate = `${yyyy}-${mm}-${dd}`;
 
     let sql = `
-    UPDATE product (
-        type_id, 
-        brand_id, 
-        cate_id, 
-        code, 
-        name, 
-        description, 
-        highlight, 
-        quantity, 
-        size, 
-        color, 
-        status,
-        updated_at,
-        image
-    ) SET (
-        '${this.type_id}',
-        '${this.brand_id}',
-        '${this.cate_id}',
-        '${this.code}',
-        '${this.name}',
-        '${this.description}',
-        '${this.highlight}',
-        '${this.quantity}',
-        '${this.size}',
-        '${this.color}',
-        '${this.status}',
-        '${updatedDate}'
-    ) WHERE id = ${id}
+    UPDATE product  SET 
+        type_id = '${this.type_id}',
+        brand_id = '${this.brand_id}',
+        cate_id = '${this.cate_id}',
+        code = '${this.code}',
+        name = '${this.name}',
+        description = '${this.description}',
+        highlight = '${this.highlight}',
+        quantity = '${this.quantity}',
+        size = '${this.size}',
+        color = '${this.color}',
+        status = '${this.status}',
+        updated_at = '${updatedDate}',
+        image = '${this.image}'
+     WHERE id = ${id}
     `;
 
     return db.execute(sql);

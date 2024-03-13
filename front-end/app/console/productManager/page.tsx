@@ -65,7 +65,7 @@ export default function ProductManager() {
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
   const editProduct = (productId: any) => {
-    window.location.href = `${thisPageUrl}/${productId}`
+    window.open(`${thisPageUrl}/${productId}`)
   }
   const deleteProduct = (productId: any) => {
     axios
