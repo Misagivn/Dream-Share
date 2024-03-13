@@ -64,7 +64,7 @@ exports.getProductById = async (req, res, next) => {
   }
 };
 
-exports.updatedAProduct = async (req, res, next, downloadUrlString) => {
+exports.updatedAProduct = async (req, res, next) => {
   try {
     let productId = req.params.id;
     let {
@@ -79,7 +79,8 @@ exports.updatedAProduct = async (req, res, next, downloadUrlString) => {
       size,
       color,
       status,
-      image
+      price,
+      // image
     } = req.body;
     let product = new Product(
       type_id,
@@ -93,7 +94,8 @@ exports.updatedAProduct = async (req, res, next, downloadUrlString) => {
       size,
       color,
       status,
-      image = downloadUrlString
+      price,
+      // image = downloadUrlString
     );
     product = await product.UpdatedAProduct(productId);
     res.status(201).json({ message: "Update Successfully!", data: product });

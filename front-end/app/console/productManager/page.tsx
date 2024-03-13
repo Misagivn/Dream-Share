@@ -1,22 +1,16 @@
 "use client";
 import {
-  Accordion,
-  AccordionItem,
-  Card,
-  Spacer,
   Table,
   TableHeader,
   TableColumn,
   TableBody,
   TableRow,
   TableCell,
-  getKeyValue,
   User,
   Chip,
   Tooltip,
   ChipProps,
   Pagination,
-  Spinner,
   Input,
   Dropdown,
   DropdownTrigger,
@@ -34,9 +28,6 @@ import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import React from "react";
-import { Link, Route, Router, Routes } from "react-router-dom";
-import { EditProductPage } from "./[id]/page"
-import { useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   Active: "success",
@@ -65,8 +56,8 @@ export default function ProductManager() {
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
   const editProduct = (productId: any) => {
-    window.open(`${thisPageUrl}/${productId}`)
-  }
+    window.open(`${thisPageUrl}/editProduct/${productId}`);
+  };
   const deleteProduct = (productId: any) => {
     axios
       .delete(`${baseURL}/products/${productId}`)
@@ -98,7 +89,7 @@ export default function ProductManager() {
             <User
               avatarProps={{
                 radius: "lg",
-                src: "https://loremflickr.com/320/240/dog",
+                src: productdata.image || "https://loremflickr.com/320/240/dog",
               }}
               description={productdata.code}
               name={cellValue}
@@ -134,12 +125,12 @@ export default function ProductManager() {
                 </span>
               </Tooltip>
               <Tooltip content="Edit Product">
-                  <span 
+                <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
                   onClick={() => editProduct(productdata.id)}
-                  >
-                    <EditIcon />
-                  </span>
+                >
+                  <EditIcon />
+                </span>
               </Tooltip>
               <Tooltip color="danger" content="Delete Product">
                 <span
@@ -297,55 +288,55 @@ export default function ProductManager() {
     // <Router>
     //   <Routes>
     //     <Route path="http://localhost:3000/console/productManager:id" element={<EditProductPage/>}/>
-        <div className="">
-          <Table
-            aria-label="Example table with custom cells"
-            topContent={topContent}
-            bottomContent={
-              <div className="flex w-full justify-center">
-                <Pagination
-                  isCompact
-                  showControls
-                  showShadow
-                  color="secondary"
-                  page={page}
-                  total={pages}
-                  onChange={(page) => setPage(page)}
-                />
-              </div>
-            }
-            checkboxesProps={{
-              classNames: {
-                wrapper:
-                  "after:bg-foreground after:text-background text-background",
-              },
-            }}
-            classNames={{
-              wrapper: "min-h-[222px]",
-            }}
-          >
-            <TableHeader columns={columns}>
-              {(column) => (
-                <TableColumn
-                  key={column.uid}
-                  align={column.uid === "actions" ? "center" : "start"}
-                  allowsSorting={column.sortable}
-                >
-                  {column.name}
-                </TableColumn>
+    <div className="">
+      <Table
+        aria-label="Example table with custom cells"
+        topContent={topContent}
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="secondary"
+              page={page}
+              total={pages}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        }
+        checkboxesProps={{
+          classNames: {
+            wrapper:
+              "after:bg-foreground after:text-background text-background",
+          },
+        }}
+        classNames={{
+          wrapper: "min-h-[222px]",
+        }}
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody items={items} className="justify-center">
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
-            </TableHeader>
-            <TableBody items={items} className="justify-center">
-              {(item) => (
-                <TableRow key={item.id}>
-                  {(columnKey) => (
-                    <TableCell>{renderCell(item, columnKey)}</TableCell>
-                  )}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
     //   </Routes>
     // </Router>
   );

@@ -10,7 +10,6 @@ exports.checkAccount= async (req, res, next) => {
         email,
         password
       );
-      console.log(account.email);
       account = await account.checkAccount();
       
       res.status(201).json({

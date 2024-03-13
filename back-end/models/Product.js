@@ -106,7 +106,8 @@ class Product {
         color = '${this.color}',
         status = '${this.status}',
         updated_at = '${updatedDate}',
-        image = '${this.image}'
+        price = '${this.price}',
+        image = ''
      WHERE id = ${id}
     `;
 

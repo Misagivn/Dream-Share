@@ -11,7 +11,6 @@ import {
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { CameraIcon } from "./CameraIcon";
-import { data } from "autoprefixer";
 
 export default function EditProductsPage({ params }) {
   const currentId = params.id;
@@ -164,6 +163,7 @@ export default function EditProductsPage({ params }) {
     updated_at: "",
     created_at: "",
     price: productPrice,
+    // image: selectedFile
   };
   function updateProduct() {
     const formData = new FormData();
@@ -179,22 +179,18 @@ export default function EditProductsPage({ params }) {
     formData.append("color", productColor);
     formData.append("status", productStatus);
     formData.append("price", productPrice);
-    if (selectedFile === null){
-      formData.append("image", selectedImage);
-    } else {
-      formData.append("image", selectedFile);
-    }
+    // formData.append("image", selectedFile);
     console.log("Do update")
     console.log(newProductData)
     axios
       .put(
         `${baseURL}/products/${currentId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
+        // formData,
+        // {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // },
         newProductData
       )
       .then(function (res) {
@@ -215,7 +211,7 @@ export default function EditProductsPage({ params }) {
       <h1 className="text-4xl">Create New Product</h1>
       <Card>
         <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5 pl-5">
-          <Button color="success" endContent={<CameraIcon />}>
+          {/* <Button color="success" endContent={<CameraIcon />}>
             <label htmlFor="imageInput">Choose A Photo</label>
             <input
               id="imageInput"
@@ -225,7 +221,7 @@ export default function EditProductsPage({ params }) {
               color="success"
               onChange={handleImageSelection}
             />
-          </Button>
+          </Button> */}
           <Image
             width={480}
             height={300}
@@ -261,7 +257,7 @@ export default function EditProductsPage({ params }) {
             placeholder="Select furniture Type"
             isRequired
             className=""
-            defaultSelectedKeys={selectedType.toString()}
+            defaultSelectedKeys={JSON.stringify(selectedType)}
             onChange={handleTypeSelect}
           >
             {(type) => <SelectItem key={type.id}>{type.name}</SelectItem>}
@@ -273,7 +269,7 @@ export default function EditProductsPage({ params }) {
             placeholder="Select furniture Brand"
             isRequired
             className=""
-            defaultSelectedKeys={selectedBrand.toString()}
+            defaultSelectedKeys={JSON.stringify(selectedBrand)}
             onChange={handleBrandSelect}
           >
             {(brand) => <SelectItem key={brand.id}>{brand.name}</SelectItem>}
@@ -285,7 +281,7 @@ export default function EditProductsPage({ params }) {
             placeholder="Select furniture Category"
             isRequired
             className=""
-            defaultSelectedKeys={selectedCategory.toString()}
+            defaultSelectedKeys={JSON.stringify(selectedCategory)}
             onChange={handleCategorySelect}
           >
             {(category) => (
