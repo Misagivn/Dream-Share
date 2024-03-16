@@ -6,4 +6,12 @@ router
   .route("/")
   .post(accountControllers.checkAccount)
 
+router
+  .route("/create") 
+  .post(accountControllers.createAccount)
+
+router
+  .route("/:accEmail")
+  .get(accountControllers.checkExist)
+
 module.exports = router;

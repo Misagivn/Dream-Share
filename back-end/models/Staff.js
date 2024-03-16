@@ -47,7 +47,7 @@ class Staff {
         '${this.name}',
         '${this.phonenumber}',
         '${this.gender}',
-        '${this.status}',
+        'Active',
         '${this.address}',
         '${createdDate}'
     )
