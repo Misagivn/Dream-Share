@@ -41,6 +41,19 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+
+  logout: async (req, res) => {
+    try {
+      // Xóa token từ trình duyệt của người dùng
+      res.clearCookie('token');
+      res.status(200).json({ message: 'Logout successful' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+
   
 };
+
 

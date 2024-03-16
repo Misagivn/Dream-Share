@@ -13,10 +13,10 @@ const pool = mySQL.createPool({
 });
 
 //Test connection here
-// let sql = "SELECT * FROM role";
+let sql = "SELECT * FROM role";
 
-// pool.execute(sql, function (err, res) {
-//   if (err) throw err;
-//   console.log(res);
-// });
+pool.execute(sql, function (err, res) {
+if (err) throw err;
+ console.log(res);
+});
  module.exports = pool.promise();

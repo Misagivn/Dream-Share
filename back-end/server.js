@@ -1,4 +1,3 @@
-const express  = require('express');
 const bodyParser  = require("body-parser");
 const dotenv = require('dotenv');
 const swaggerJsdoc = require('swagger-jsdoc');
@@ -6,6 +5,8 @@ const swaggerUi = require('swagger-ui-express');
 const cors = require('cors')
 const config = require('./config/db.js');
 const userRoutes = require('./routes/authRoutes.js');
+const express = require('express');
+const session = require('express-session');
 
 dotenv.config();
 const app = express();
@@ -17,8 +18,8 @@ app.use(cors());
 
 app.use(session({
   secret: config.sessionSecret,
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: false
 }));
 
 //Product route
@@ -30,7 +31,7 @@ app.use(session({
 // //Breand route
 // app.use("/brands", require("./routes/brandRoutes.js"));
 
-app.use('/users', userRoutes);
+app.use('/authRoutes', require("./routes/authRoutes.js"));
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
