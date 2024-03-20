@@ -28,6 +28,8 @@ app.use("/staffs", require("./routes/staffRoutes.js"));
 app.use("/categories", require("./routes/categoryRoutes.js"))
 //Account route
 app.use("/accounts", require("./routes/accountRoutes.js"))
+//Order details
+app.use("/orderdetails", require("./routes/orderDetailRoutes.js"))
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
