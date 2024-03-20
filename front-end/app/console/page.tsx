@@ -27,7 +27,7 @@ export default function ConsolePage() {
           alt="Default Image"
           />
         </Card>
-        <Card shadow="sm" isPressable onPress={() => window.open(`http://www.google.com`)} className="h-[200px] max-w-[200px]">
+        <Card shadow="sm" isPressable onPress={() => window.open(`../console/orderManager`)} className="h-[200px] max-w-[200px]">
           <CardHeader className="absoutule !item-start z-10 top-1">
             <p className="text-small text-lime-300 text-left uppercase font-bold">Order Manager Tool</p>
           </CardHeader>

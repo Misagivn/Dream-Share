@@ -208,7 +208,7 @@ export default function EditProductsPage({ params }) {
 
   return (
     <div>
-      <h1 className="text-4xl">Create New Product</h1>
+      <h1 className="text-4xl">Edit Product</h1>
       <Card>
         <div className="flex w-full flex-wrap md:flex-nowrap gap-4 pt-5 pl-5">
           {/* <Button color="success" endContent={<CameraIcon />}>

@@ -13,14 +13,14 @@ class Order {
     status
   ) {
     (this.account_id = account_id),
-    (this.account_name = account_name),
-    (this.account_email = account_email),
-    (this.account_phone = account_phone),
-    (this.shipping_address = shipping_address),
-    (this.created_at = created_at),
-    (this.payment_method = payment_method),
-    (this.total_price = total_price),
-    (this.status = status);
+      (this.account_name = account_name),
+      (this.account_email = account_email),
+      (this.account_phone = account_phone),
+      (this.shipping_address = shipping_address),
+      (this.created_at = created_at),
+      (this.payment_method = payment_method),
+      (this.total_price = total_price),
+      (this.status = status);
   }
 
   save() {
@@ -71,8 +71,9 @@ class Order {
   }
 
   static deleteOrder(id) {
-    let sql = `DELETE  FROM order1 WHERE id=${id}`;
-    return db.execute(sql);
+    let sql1 = `DELETE FROM order_detail WHERE order_id=${id}`
+    let sql2 = `DELETE FROM order1 WHERE id=${id}`
+    return db.execute(sql1), db.execute(sql2);
   }
 
   UpdatedAnOrder(id) {

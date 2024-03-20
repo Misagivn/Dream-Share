@@ -6,9 +6,9 @@ exports.checkAccount = async (req, res, next) => {
     let account = new Account(email, password);
     account = await account.checkAccount();
 
-    res.status(201).json({
+    res.status(200).json({
       message: "Account does match",
-      data: account,
+      account
     });
   } catch (error) {
     console.log(error);

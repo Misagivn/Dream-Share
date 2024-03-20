@@ -2,8 +2,8 @@ const Order = require("../models/Order.js");
 
 exports.getAllOrders = async (req, res, next) => {
   try {
-    const [products, _] = await Order.findAll();
-    res.status(200).json({ count: products.length, products });
+    const [orders, _] = await Order.findAll();
+    res.status(200).json({ count: orders.length, orders });
   } catch (error) {
     console.log(error);
     next(error);
@@ -60,7 +60,7 @@ exports.getOrderById = async (req, res, next) => {
 exports.deleteOrder = async  (req, res, next) => {
   try{
     let orderId = req.params.id;
-    let [order, _] = await Product.deleteOrder(orderId);
+    let [order, _] = await Order.deleteOrder(orderId);
     res.status(200).json({message:"Delete Successfully!"});
   } catch(error) {
     console.log(error);
