@@ -66,25 +66,16 @@ class Staff {
     let updatedDate = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
 
     let sql = `
-    UPDATE account (
-      email,
-      password,
-      name,
-      phonenumber,
-      gender,
-      status,
-      address,
-      updated_at
-    ) SET (
-      '${this.email}',
-      '${this.password}',
-      '${this.name}',
-      '${this.phonenumber}',
-      '${this.gender}',
-      '${this.status}',
-      '${this.address}',
-      '${updatedDate}'
-    ) WHERE id = ${id}
+    UPDATE account SET 
+      email = '${this.email}',
+      password = '${this.password}',
+      name = '${this.name}',
+      phonenumber = '${this.phonenumber}',
+      gender = '${this.gender}',
+      status = '${this.status}',
+      address = '${this.address}',
+      updated_at ='${updatedDate}'
+    WHERE id = ${id}
     `;
 
     return db.execute(sql);

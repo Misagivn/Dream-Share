@@ -5,25 +5,22 @@ import {
   Select,
   SelectItem,
   Spacer,
-  Switch,
-  Image,
   Button,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 
-export default function CreateNewProductsPage({params}) {
+export default function EditStaffPage({params}) {
   const currentId = params.id;
 
   const baseURL = "http://localhost:5000";
   const axios = require("axios");
-  const [staffName, setStaffName] = useState("Staff name here");
+  const [staffName, setStaffName] = useState([]);
   const [staffEmail, setStaffEmail] = useState([]);
   const [staffPassword, setStaffPassword] = useState([]);
   const [staffPhonenumber, setStaffPhonenumber] = useState([]);
   const [staffAddress, setStaffAddress] = useState([]);
   //State cho selected và inputdata
   const [selectedSex, setSelectedSex] = React.useState<string>("");
-
 
   // Hàm kiểm tra tên sản phẩm not null
   const checkNameValid = React.useMemo(() => {
@@ -36,7 +33,7 @@ export default function CreateNewProductsPage({params}) {
     .get(`${baseURL}/staffs/${currentId}`)
     .then((res) => {
       const dataFetch = res.data.staff;
-      console.log(dataFetch);
+      console.log(res.data.staff);
       setStaffName(dataFetch.name);
       setStaffEmail(dataFetch.email);
       setStaffPassword(dataFetch.password);
@@ -44,10 +41,11 @@ export default function CreateNewProductsPage({params}) {
       setStaffAddress(dataFetch.address);
       setSelectedSex(dataFetch.gender);
     })
-  })
+    .catch ((err) => {console.log(err);})
+  }, [])
   const handleSexSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSex(e.target.value);
-    console.log("Type ID: " + e.target.value);
+    console.log("Sex selected: " + e.target.value);
   };
   //Function tạo data mới
   const newProductData = {
@@ -60,17 +58,17 @@ export default function CreateNewProductsPage({params}) {
     status: "Active",
     address: staffAddress,
   };
-  function createNewStaff() {
+  function updateStaff() {
     axios
-      .post(
-        `${baseURL}/staffs`,
+      .put(
+        `${baseURL}/staffs/${currentId}`,
         newProductData
       )
       .then(function (res) {
-        console.log("Create new success!!!");
+        console.log("Update staff success!!!");
         console.log(res.data);
         // Notify user
-        alert("Staff created successfully!. Closing this tab");
+        alert("Staff updated successfully!. Closing this tab");
         // Close tab
         window.close();
       })
@@ -81,7 +79,7 @@ export default function CreateNewProductsPage({params}) {
 
   return (
     <div>
-      <h1 className="text-4xl">Create New Staff</h1>
+      <h1 className="text-4xl">Update Staff Information</h1>
       <Card>
         <Spacer y="10px" />
         <div className="w-[700px] p-3">
@@ -124,7 +122,7 @@ export default function CreateNewProductsPage({params}) {
           <Spacer y="10px" />
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
             <Select
-              items={types}
+              items="Sex"
               label="Staff Sex"
               placeholder="Select Sex"
               isRequired
@@ -143,6 +141,7 @@ export default function CreateNewProductsPage({params}) {
               type="address"
               label="Address"
               placeholder="Enter staff Address"
+              value={staffAddress}
               onValueChange={(value) => setStaffAddress(value)}
             />
           </div>
@@ -153,9 +152,9 @@ export default function CreateNewProductsPage({params}) {
       <Button
         radius="full"
         className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
-        onClick={() => createNewStaff()}
+        onClick={() => updateStaff()}
       >
-        Create
+        Update
       </Button>
     </div>
   );
