@@ -23,7 +23,7 @@ export default function ConsolePage() {
           </CardHeader>
           <Image
           removeWrapper
-          src="product_img.jpg"
+          src="furniture2.jpg"
           alt="Default Image"
           />
         </Card>
@@ -31,16 +31,31 @@ export default function ConsolePage() {
           <CardHeader className="absoutule !item-start z-10 top-1">
             <p className="text-small text-lime-300 text-left uppercase font-bold">Order Manager Tool</p>
           </CardHeader>
+          <Image
+          removeWrapper
+          src="bill_img.jpg"
+          alt="Default Image"
+          />
         </Card>
         <Card shadow="sm" isPressable onPress={() => window.open(`../console/staffManager`)} className="h-[200px] max-w-[200px]">
           <CardHeader className="absoutule !item-start z-10 top-1">
             <p className="text-small text-lime-300 text-left uppercase font-bold">Staff Manager Tool</p>
           </CardHeader>
+          <Image
+          removeWrapper
+          src="stafff_img.jpg"
+          alt="Default Image"
+          />
         </Card>
         <Card shadow="sm" isPressable onPress={() => window.open(`http://www.google.com`)} className="h-[200px] max-w-[200px]">
           <CardHeader className="absoutule !item-start z-10 top-1">
             <p className="text-small text-lime-300 text-left uppercase font-bold">Brand Manager Tool</p>
           </CardHeader>
+          <Image
+          removeWrapper
+          src="brand_img.jpg"
+          alt="Default Image"
+          />
         </Card>
       </div>
     </div>

@@ -14,8 +14,11 @@ class Account {
     let yyyy = d.getFullYear();
     let mm = d.getMonth() + 1;
     let dd = d.getDate();
+    let hh = d.getHours();
+    let mi = d.getMinutes();
+    let ss = d.getSeconds();
 
-    let createdDate = `${yyyy}-${mm}-${dd}`;
+    let createdDate = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
 
     let sql = `
     INSERT INTO account (

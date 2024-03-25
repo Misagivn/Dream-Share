@@ -35,8 +35,11 @@ class Product {
     let yyyy = d.getFullYear();
     let mm = d.getMonth() + 1;
     let dd = d.getDate();
+    let hh = d.getHours();
+    let mi = d.getMinutes();
+    let ss = d.getSeconds();
 
-    let createdDate = `${yyyy}-${mm}-${dd}`;
+    let createdDate = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
 
     let sql = `
     INSERT INTO product (
@@ -89,8 +92,11 @@ class Product {
     let yyyy = d.getFullYear();
     let mm = d.getMonth() + 1;
     let dd = d.getDate();
+    let hh = d.getHours();
+    let mi = d.getMinutes();
+    let ss = d.getSeconds();
 
-    let updatedDate = `${yyyy}-${mm}-${dd}`;
+    let updatedDate = `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
 
     let sql = `
     UPDATE product  SET 
