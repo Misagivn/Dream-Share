@@ -72,6 +72,7 @@ export default function ProductManager() {
       })
       .catch(function (err) {
         console.log(err);
+        alert("Can't delete this Category. Please inform IT Support");
       });
   };
   //Dạng như gán res vào chuỗi

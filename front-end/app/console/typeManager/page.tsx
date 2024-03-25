@@ -34,36 +34,35 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   Cancel: "danger",
 };
 
-export default function ProductManager() {
+export default function TypeManager() {
   //Các biến connect + get data từ API
-  const baseURL = "http://26.221.156.50:5000";
+  const baseURL = "http://localhost:5000";
   const axios = require("axios");
-  const [brand, setBrands] = useState([]); //Tạo state tất cả product
+  const [types, setTypes] = useState([]); //Tạo state tất cả product
   //Setup các biến để pagination
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const pages = Math.ceil(brand.length / rowsPerPage);
+  const pages = Math.ceil(types.length / rowsPerPage);
   //Setup cho search bar
-  const [filteredProducts, setFilteredProducts] = useState([]); // State chứa danh sách sản phẩm đã lọc
   const [filterValue, setFilterValue] = useState(""); // State chứa giá trị tìm ưkiếm
   const hasSearchFilter = Boolean(filterValue);
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
-  const thisPageUrl = `http://localhost:3000/console/brandManager`;
-  const goToCreateBrand = `${thisPageUrl}/createBrand`;
+  const thisPageUrl = `http://localhost:3000/console/typeManager`;
+  const goToCreatetype = `${thisPageUrl}/createType`;
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
-  const editBrand = (brandId: any) => {
-    window.open(`${thisPageUrl}/editBrand/${brandId}`);
+  const editType = (typeId: any) => {
+    window.open(`${thisPageUrl}/editType/${typeId}`);
   };
-  const deleteBrand = (brandId: any) => {
+  const deleteType = (typeId: any) => {
     axios
-      .delete(`${baseURL}/brands/${brandId}`)
+      .delete(`${baseURL}/types/${typeId}`)
       .then(function (res) {
-        console.log(`Done delete brand with ID: ${brandId}`);
+        console.log(`Done delete type with ID: ${typeId}`);
         const isConfirmed = window.confirm(
-          `Complete deleted brand ID: ${brandId}`
+          `Complete deleted type ID: ${typeId}`
         );
         if (isConfirmed) {
           {
@@ -73,22 +72,22 @@ export default function ProductManager() {
       })
       .catch(function (err) {
         console.log(err);
-        alert("Can't delete this Brand. Please inform IT Support");
+        alert("Can't delete this Type. Please inform IT Support");
       });
   };
   //Dạng như gán res vào chuỗi
-  type brandData = (typeof brand)[0];
+  type typeData = (typeof types)[0];
   //Render từng cell của table (vì có một số cell là custom, chứ không thì table tự render ra vẫn đc)
   const renderCell = React.useCallback(
-    (branddata: brandData, columnKey: React.Key) => {
-      const cellValue = branddata[columnKey as keyof brandData];
+    (typedata: typeData, columnKey: React.Key) => {
+      const cellValue = typedata[columnKey as keyof typeData];
 
       switch (columnKey) {
         case "name":
           return (
             <div className="flex flex-col w-[180px]">
               <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {branddata.name}
+                {typedata.name}
               </p>
             </div>
           );
@@ -96,7 +95,7 @@ export default function ProductManager() {
           return (
             <div className="flex flex-col w-[300px]">
               <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {branddata.description}
+                {typedata.description}
               </p>
             </div>
           );
@@ -104,7 +103,7 @@ export default function ProductManager() {
           return (
             <Chip
               className="capitalize"
-              color={statusColorMap[branddata.status]}
+              color={statusColorMap[typedata.status]}
               size="sm"
               variant="flat"
             >
@@ -114,18 +113,18 @@ export default function ProductManager() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <Tooltip content="Edit Brand">
+              <Tooltip content="Edit type">
                 <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => editBrand(branddata.id)}
+                  onClick={() => editType(typedata.id)}
                 >
                   <EditIcon />
                 </span>
               </Tooltip>
-              <Tooltip color="danger" content="Delete Product">
+              <Tooltip color="danger" content="Delete type">
                 <span
                   className="text-lg text-danger cursor-pointer active:opacity-50"
-                  onClick={() => deleteBrand(branddata.id)}
+                  onClick={() => deleteType(typedata.id)}
                 >
                   <DeleteIcon />
                 </span>
@@ -141,10 +140,10 @@ export default function ProductManager() {
   //thực hiên GET data từ API và gán vào state setProduct
   useEffect(() => {
     axios
-      .get(`${baseURL}/brands`)
+      .get(`${baseURL}/types`)
       .then(function (res) {
-        console.log(res.data.brands);
-        setBrands(res.data.brands);
+        console.log(res.data.types);
+        setTypes(res.data.types);
       })
       .catch(function (err) {
         console.log(err);
@@ -152,23 +151,23 @@ export default function ProductManager() {
   }, []);
   //Top search bar
   const filteredItems = React.useMemo(() => {
-    let filteredProducts = [...brand];
+    let filteredProducts = [...types];
 
     if (hasSearchFilter) {
-      filteredProducts = filteredProducts.filter((brand) =>
-        brand.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredProducts = filteredProducts.filter((types) =>
+        types.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredProducts = filteredProducts.filter((product) =>
-        Array.from(statusFilter).includes(product.status)
+      filteredProducts = filteredProducts.filter((types) =>
+        Array.from(statusFilter).includes(types.status)
       );
     }
     return filteredProducts;
-  }, [brand, hasSearchFilter, statusFilter, filterValue]);
+  }, [types, hasSearchFilter, statusFilter, filterValue]);
   //Thực hiện search
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -234,7 +233,7 @@ export default function ProductManager() {
               className="bg-foreground text-background"
               endContent={<PlusIcon width={undefined} height={undefined} />}
               size="sm"
-              onClick={() => window.open(goToCreateBrand)}
+              onClick={() => window.open(goToCreatetype)}
             >
               Add New
             </Button>
@@ -242,7 +241,7 @@ export default function ProductManager() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {brand.length} brands
+            Total {types.length} types
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -262,7 +261,7 @@ export default function ProductManager() {
     filterValue,
     onSearchChange,
     statusFilter,
-    brand.length,
+    types.length,
     onRowsPerPageChange,
   ]);
   //Định nghĩa lại items trong table

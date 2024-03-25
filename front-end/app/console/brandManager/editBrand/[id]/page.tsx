@@ -94,7 +94,7 @@ export default function EditBrandPage({ params }) {
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
             <Input
               type="Description"
-              label="Product Description"
+              label="Brand Description"
               placeholder="Enter brand description"
               value={brandDescription}
               onValueChange={(value) => setBrandDescription(value)}
@@ -103,7 +103,7 @@ export default function EditBrandPage({ params }) {
           <Spacer y='10px'/>
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
             <Select
-                label="Product Status"
+                label="Brand Status"
                 placeholder="Select product status"
                 isRequired
                 defaultSelectedKeys={brandStatus}

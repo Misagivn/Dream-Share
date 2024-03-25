@@ -9,24 +9,24 @@ import {
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 
-export default function EditCategoryPage({ params }) {
+export default function EdittypePage({ params }) {
   const currentId = params.id;
 
   const baseURL = "http://26.221.156.50:5000";
   const axios = require("axios");
-  const [categoryName, setCategoryName] = useState([]);
-  const [categoryDescription, setCategoryDescription] = useState([]);
-  const [categoryStatus, setCategoryStatus] = useState([]);
+  const [typeName, setTypeName] = useState([]);
+  const [typeDescription, setTypeDescription] = useState([]);
+  const [typeStatus, setTypeStatus] = useState([]);
   //fetch product data theo id
   useEffect(() => {
     axios
-      .get(`${baseURL}/categories/${currentId}`)
+      .get(`${baseURL}/types/${currentId}`)
       .then((res) => {
-        const dataFetch = res.data.category;
-        console.log(res.data.category);
-        setCategoryName(dataFetch.name);
-        setCategoryDescription(dataFetch.description);
-        setCategoryStatus(dataFetch.status);
+        const dataFetch = res.data.type;
+        console.log(res.data.type);
+        setTypeName(dataFetch.name);
+        setTypeDescription(dataFetch.description);
+        setTypeStatus(dataFetch.status);
       })
       .catch((err) => {
         console.log(err);
@@ -34,36 +34,36 @@ export default function EditCategoryPage({ params }) {
   }, []);
   // Hàm kiểm tra tên sản phẩm not null
   const checkNameValid = React.useMemo(() => {
-    if (categoryName === "") return true;
+    if (typeName === "") return true;
     return false;
-  }, [categoryName]);
+  }, [typeName]);
   //Kiểm tra quantity + price
   function isPositiveInteger(value) {
     return /^\+?[1-9]\d*$/.test(value);
   }
 
   const handleStatusSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCategoryStatus(e.target.value);
+    setTypeStatus(e.target.value);
     console.log("Status: " + e.target.value);
   }
   //Function tạo data mới
-  const newCategoryData = {
-    name: categoryName,
-    description: categoryDescription,
-    status: categoryStatus,
+  const newTypeData = {
+    name: typeName,
+    description: typeDescription,
+    status: typeStatus,
     // image: selectedFile
   };
-  function updateCategory() {
+  function updateType() {
     axios
       .put(
-        `${baseURL}/categories/${currentId}`,
-        newCategoryData
+        `${baseURL}/types/${currentId}`,
+        newTypeData
       )
       .then(function (res) {
         console.log("Create new success!!!");
         console.log(res.data);
         // Notify user
-        alert("Category Updated successfully!. Closing this tab");
+        alert("Type Updated successfully!. Closing this tab");
         // Close tab
         window.close();
       })
@@ -74,7 +74,7 @@ export default function EditCategoryPage({ params }) {
 
   return (
     <div>
-      <h1 className="text-4xl">Edit Category</h1>
+      <h1 className="text-4xl">Edit Type</h1>
       <Card>
         <Spacer y="10px" />
         <div className="w-[700px] p-3">
@@ -82,31 +82,31 @@ export default function EditCategoryPage({ params }) {
             <Input
               type="name"
               label="Name"
-              placeholder="Enter category name"
-              value={categoryName}
+              placeholder="Enter Type name"
+              value={typeName}
               isInvalid={checkNameValid}
               color={checkNameValid ? "danger" : "success"}
               errorMessage={checkNameValid && "Please enter a valid name"}
-              onValueChange={(value) => setCategoryName(value)}
+              onValueChange={(value) => setTypeName(value)}
             />
           </div>
           <Spacer y="10px" />
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
             <Input
               type="Description"
-              label="Category Description"
+              label="Type Description"
               placeholder="Enter brand description"
-              value={categoryDescription}
-              onValueChange={(value) => setCategoryDescription(value)}
+              value={typeDescription}
+              onValueChange={(value) => setTypeDescription(value)}
             />
           </div>
           <Spacer y='10px'/>
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
             <Select
-                label="Category Status"
+                label="Type Status"
                 placeholder="Select product status"
                 isRequired
-                defaultSelectedKeys={categoryStatus}
+                defaultSelectedKeys={typeStatus}
                 className=""
                 onChange={handleStatusSelect}
               >
@@ -127,7 +127,7 @@ export default function EditCategoryPage({ params }) {
       <Button
         radius="full"
         className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
-        onClick={() => updateCategory()}
+        onClick={() => updateType()}
       >
         Update
       </Button>
