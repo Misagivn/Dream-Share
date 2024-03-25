@@ -49,6 +49,10 @@ export default function EditStaffPage({params}) {
     setSelectedSex(e.target.value);
     console.log("Sex selected: " + e.target.value);
   };
+  const handleStatusSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedStatus(e.target.value);
+    console.log("Status selected: " + e.target.value);
+  };
   //Function tạo data mới
   const newProductData = {
     role_id: 2,
@@ -155,8 +159,8 @@ export default function EditStaffPage({params}) {
                 placeholder="Select Sex"
                 isRequired
                 className=""
-                defaultSelectedKeys={selectedSex.toString()}
-                onChange={handleSexSelect}
+                defaultSelectedKeys={selectedStatus.toString()}
+                onChange={handleStatusSelect}
               >
                 <SelectItem value="Active" key={"Active"} color="success">
                   Active

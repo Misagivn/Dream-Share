@@ -6,7 +6,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  User,
   Chip,
   Tooltip,
   ChipProps,
@@ -31,7 +30,7 @@ import React from "react";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   Active: "success",
-  Pending: "warning",
+  Paused: "warning",
   Cancel: "danger",
 };
 
@@ -39,35 +38,31 @@ export default function ProductManager() {
   //Các biến connect + get data từ API
   const baseURL = "http://localhost:5000";
   const axios = require("axios");
-  const [staff, setStaff] = useState([]); //Tạo state tất cả Order
+  const [categories, setCategories] = useState([]); //Tạo state tất cả product
   //Setup các biến để pagination
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const pages = Math.ceil(staff.length / rowsPerPage);
+  const pages = Math.ceil(categories.length / rowsPerPage);
   //Setup cho search bar
-  const [filteredProducts, setFilteredProducts] = useState([]); // State chứa danh sách sản phẩm đã lọc
   const [filterValue, setFilterValue] = useState(""); // State chứa giá trị tìm ưkiếm
   const hasSearchFilter = Boolean(filterValue);
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
-  const thisPageUrl = `http://localhost:3000/console/staffManager`;
-  const goToCreateStaff = `${thisPageUrl}/createStaff`;
+  const thisPageUrl = `http://localhost:3000/console/categoryManager`;
+  const goToCreateCategory = `${thisPageUrl}/createCategory`;
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
-  const editStaff = (staffId: any) => {
-    window.open(`${thisPageUrl}/editStaff/${staffId}`);
+  const editCategory = (categoryId: any) => {
+    window.open(`${thisPageUrl}/editCategory/${categoryId}`);
   };
-  const viewDetails = (staffId: any) => {
-    window.open(`${thisPageUrl}/viewStaff/${staffId}`);
-  };
-  const deleteStaff = (staffId: any) => {
+  const deleteCategory = (categoryId: any) => {
     axios
-      .delete(`${baseURL}/staffs/${staffId}`)
+      .delete(`${baseURL}/categories/${categoryId}`)
       .then(function (res) {
-        console.log(`Done delete order with ID: ${staffId}`);
+        console.log(`Done delete category with ID: ${categoryId}`);
         const isConfirmed = window.confirm(
-          `Complete deleted order ID: ${staffId}`
+          `Complete deleted category ID: ${categoryId}`
         );
         if (isConfirmed) {
           {
@@ -80,42 +75,26 @@ export default function ProductManager() {
       });
   };
   //Dạng như gán res vào chuỗi
-  type staffData = (typeof staff)[0];
+  type categoryData = (typeof categories)[0];
   //Render từng cell của table (vì có một số cell là custom, chứ không thì table tự render ra vẫn đc)
   const renderCell = React.useCallback(
-    (staffdata: staffData, columnKey: React.Key) => {
-      const cellValue = staffdata[columnKey as keyof staffData];
+    (categorydata: categoryData, columnKey: React.Key) => {
+      const cellValue = categorydata[columnKey as keyof categoryData];
 
       switch (columnKey) {
         case "name":
           return (
-            <div className="flex flex-col w-[100px]">
+            <div className="flex flex-col w-[180px]">
               <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {staffdata.name}
+                {categorydata.name}
               </p>
             </div>
           );
-        case "email":
+        case "description":
           return (
-            <div className="flex flex-col w-[200px]">
+            <div className="flex flex-col w-[300px]">
               <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {staffdata.email}
-              </p>
-            </div>
-          );
-        case "phone":
-          return (
-            <div className="flex flex-col w-[80px]">
-              <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {staffdata.phonenumber}
-              </p>
-            </div>
-          );
-        case "address":
-          return (
-            <div className="flex flex-col w-[200px]">
-              <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {staffdata.address}
+                {categorydata.description}
               </p>
             </div>
           );
@@ -123,7 +102,7 @@ export default function ProductManager() {
           return (
             <Chip
               className="capitalize"
-              color={statusColorMap[staffdata.status]}
+              color={statusColorMap[categorydata.status]}
               size="sm"
               variant="flat"
             >
@@ -133,26 +112,18 @@ export default function ProductManager() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <Tooltip content="Details">
+              <Tooltip content="Edit Category">
                 <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => viewDetails(staffdata.id) }
-                >
-                  <EyeIcon />
-                </span>
-              </Tooltip>
-              <Tooltip content="Edit Staff">
-                <span
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => editStaff(staffdata.id)}
+                  onClick={() => editCategory(categorydata.id)}
                 >
                   <EditIcon />
                 </span>
               </Tooltip>
-              <Tooltip color="danger" content="Delete Staff">
+              <Tooltip color="danger" content="Delete Category">
                 <span
                   className="text-lg text-danger cursor-pointer active:opacity-50"
-                  onClick={() => deleteStaff(staffdata.id)}
+                  onClick={() => deleteCategory(categorydata.id)}
                 >
                   <DeleteIcon />
                 </span>
@@ -168,10 +139,10 @@ export default function ProductManager() {
   //thực hiên GET data từ API và gán vào state setProduct
   useEffect(() => {
     axios
-      .get(`${baseURL}/staffs`)
+      .get(`${baseURL}/categories`)
       .then(function (res) {
-        console.log(res.data.staffs);
-        setStaff(res.data.staffs);
+        console.log(res.data.categories);
+        setCategories(res.data.categories);
       })
       .catch(function (err) {
         console.log(err);
@@ -179,23 +150,23 @@ export default function ProductManager() {
   }, []);
   //Top search bar
   const filteredItems = React.useMemo(() => {
-    let filteredProducts = [...staff];
+    let filteredProducts = [...categories];
 
     if (hasSearchFilter) {
-      filteredProducts = filteredProducts.filter((staff) =>
-        staff.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredProducts = filteredProducts.filter((categories) =>
+        categories.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredProducts = filteredProducts.filter((product) =>
-        Array.from(statusFilter).includes(product.status)
+      filteredProducts = filteredProducts.filter((categories) =>
+        Array.from(statusFilter).includes(categories.status)
       );
     }
     return filteredProducts;
-  }, [staff, hasSearchFilter, statusFilter, filterValue]);
+  }, [categories, hasSearchFilter, statusFilter, filterValue]);
   //Thực hiện search
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -261,7 +232,7 @@ export default function ProductManager() {
               className="bg-foreground text-background"
               endContent={<PlusIcon width={undefined} height={undefined} />}
               size="sm"
-              onClick={() => window.open(goToCreateStaff)}
+              onClick={() => window.open(goToCreateCategory)}
             >
               Add New
             </Button>
@@ -269,7 +240,7 @@ export default function ProductManager() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {staff.length} staffs
+            Total {categories.length} categories
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -289,7 +260,7 @@ export default function ProductManager() {
     filterValue,
     onSearchChange,
     statusFilter,
-    staff.length,
+    categories.length,
     onRowsPerPageChange,
   ]);
   //Định nghĩa lại items trong table

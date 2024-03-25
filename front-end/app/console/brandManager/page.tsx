@@ -6,7 +6,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  User,
   Chip,
   Tooltip,
   ChipProps,
@@ -64,7 +63,7 @@ export default function ProductManager() {
       .then(function (res) {
         console.log(`Done delete brand with ID: ${brandId}`);
         const isConfirmed = window.confirm(
-          `Complete deleted product ID: ${brandId}`
+          `Complete deleted brand ID: ${brandId}`
         );
         if (isConfirmed) {
           {
@@ -114,11 +113,6 @@ export default function ProductManager() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <Tooltip content="Details">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                  <EyeIcon />
-                </span>
-              </Tooltip>
               <Tooltip content="Edit Brand">
                 <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
@@ -160,8 +154,8 @@ export default function ProductManager() {
     let filteredProducts = [...brand];
 
     if (hasSearchFilter) {
-      filteredProducts = filteredProducts.filter((product) =>
-        product.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredProducts = filteredProducts.filter((brand) =>
+        brand.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (

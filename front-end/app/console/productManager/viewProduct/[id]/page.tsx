@@ -173,7 +173,7 @@ export default function EditProductsPage({ params }) {
     // image: selectedFile
   };
 
-  const backToHome = (productId: any) => {
+  const backToHome = () => {
     window.close();
   };
   
