@@ -55,6 +55,9 @@ export default function ProductManager() {
   const goToCreateProduct = `${thisPageUrl}/createProduct`;
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
+  const viewProduct = (productId: any) => {
+    window.open(`${thisPageUrl}/viewProduct/${productId}`);
+  };
   const editProduct = (productId: any) => {
     window.open(`${thisPageUrl}/editProduct/${productId}`);
   };
@@ -120,7 +123,9 @@ export default function ProductManager() {
           return (
             <div className="relative flex items-center gap-2">
               <Tooltip content="Details">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  onClick={() => viewProduct(productdata.id)}
+                  >
                   <EyeIcon />
                 </span>
               </Tooltip>

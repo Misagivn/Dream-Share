@@ -12,9 +12,9 @@ const columns = [
 ];
 
 const statusOptions = [
-  { name: "Active", uid: "active" },
-  { name: "Pending", uid: "paused" },
-  { name: "Cancel", uid: "cancel" },
+  { name: "Active", uid: "Active" },
+  { name: "Pending", uid: "Pending" },
+  { name: "Cancel", uid: "Cancel" },
 ];
 
 export { columns, statusOptions };

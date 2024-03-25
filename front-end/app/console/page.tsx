@@ -57,6 +57,16 @@ export default function ConsolePage() {
           alt="Default Image"
           />
         </Card>
+        <Card shadow="sm" isPressable onPress={() => window.open(`http://www.google.com`)} className="h-[200px] max-w-[200px]">
+          <CardHeader className="absoutule !item-start z-10 top-1">
+            <p className="text-small text-lime-300 text-left uppercase font-bold">Category Manager Tool</p>
+          </CardHeader>
+          <Image
+          removeWrapper
+          src="category_img.jpg"
+          alt="Default Image"
+          />
+        </Card>
       </div>
     </div>
   );

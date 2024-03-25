@@ -6,4 +6,7 @@ router
   .route("/")
   .get(typeControllers.getAllTypes)
 
+router
+  .route("/:id")
+  .get(typeControllers.getTypeById)
 module.exports = router;

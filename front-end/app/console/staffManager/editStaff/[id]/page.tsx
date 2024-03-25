@@ -21,6 +21,7 @@ export default function EditStaffPage({params}) {
   const [staffAddress, setStaffAddress] = useState([]);
   //State cho selected và inputdata
   const [selectedSex, setSelectedSex] = React.useState<string>("");
+  const [selectedStatus, setSelectedStatus] = React.useState<string>("");
 
   // Hàm kiểm tra tên sản phẩm not null
   const checkNameValid = React.useMemo(() => {
@@ -40,6 +41,7 @@ export default function EditStaffPage({params}) {
       setStaffPhonenumber(dataFetch.phonenumber);
       setStaffAddress(dataFetch.address);
       setSelectedSex(dataFetch.gender);
+      setSelectedStatus(dataFetch.status)
     })
     .catch ((err) => {console.log(err);})
   }, [])
@@ -55,7 +57,7 @@ export default function EditStaffPage({params}) {
     email: staffEmail,
     phonenumber: staffPhonenumber,
     gender: selectedSex,
-    status: "Active",
+    status: selectedStatus,
     address: staffAddress,
   };
   function updateStaff() {
@@ -121,22 +123,6 @@ export default function EditStaffPage({params}) {
           </div>
           <Spacer y="10px" />
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-            <Select
-              items="Sex"
-              label="Staff Sex"
-              placeholder="Select Sex"
-              isRequired
-              className=""
-              defaultSelectedKeys={selectedSex.toString()}
-              onChange={handleSexSelect}
-            >
-              <SelectItem value="Men" key={"Men"} color="success">
-                Man
-              </SelectItem>
-              <SelectItem value="Women" key={"Women"} color="warning">
-                Woman
-              </SelectItem>
-            </Select>
             <Input
               type="address"
               label="Address"
@@ -145,6 +131,44 @@ export default function EditStaffPage({params}) {
               onValueChange={(value) => setStaffAddress(value)}
             />
           </div>
+          <Spacer y="10px" />
+          <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+            <Select
+                items="Sex"
+                label="Staff Sex"
+                placeholder="Select Sex"
+                isRequired
+                className=""
+                defaultSelectedKeys={selectedSex.toString()}
+                onChange={handleSexSelect}
+              >
+                <SelectItem value="Men" key={"Men"} color="success">
+                  Man
+                </SelectItem>
+                <SelectItem value="Women" key={"Women"} color="warning">
+                  Woman
+                </SelectItem>
+              </Select>
+              <Select
+                items="Status"
+                label="Staff Status"
+                placeholder="Select Sex"
+                isRequired
+                className=""
+                defaultSelectedKeys={selectedSex.toString()}
+                onChange={handleSexSelect}
+              >
+                <SelectItem value="Active" key={"Active"} color="success">
+                  Active
+                </SelectItem>
+                <SelectItem value="Pending" key={"Pending"} color="warning">
+                  Pending
+                </SelectItem>
+                <SelectItem value="Cancel" key={"Cancel"} color="danger">
+                  Cancel
+                </SelectItem>
+              </Select>
+            </div>
           <Spacer y="10px" />
         </div>
       </Card>

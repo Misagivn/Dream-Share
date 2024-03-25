@@ -19,10 +19,10 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
+import { PlusIcon } from "./PlusIcon";
 import { SearchIcon } from "./SearchIcon";
 import { EyeIcon } from "./EyeIcon";
-import { FaCheck } from "react-icons/fa";
-import { GiCancel } from "react-icons/gi";
+import { EditIcon } from "./EditIcon";
 import { DeleteIcon } from "./DeleteIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
@@ -30,69 +30,41 @@ import { capitalize } from "./utils";
 import React from "react";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  Complete: "success",
-  Pending: "warning",
+  Active: "success",
+  Paused: "warning",
   Cancel: "danger",
 };
 
 export default function ProductManager() {
   //Các biến connect + get data từ API
-  const baseURL = "http://localhost:5000";
+  const baseURL = "http://26.221.156.50:5000";
   const axios = require("axios");
-  const [order, setOrder] = useState([]); //Tạo state tất cả Order
+  const [brand, setBrands] = useState([]); //Tạo state tất cả product
   //Setup các biến để pagination
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const pages = Math.ceil(order.length / rowsPerPage);
+  const pages = Math.ceil(brand.length / rowsPerPage);
   //Setup cho search bar
+  const [filteredProducts, setFilteredProducts] = useState([]); // State chứa danh sách sản phẩm đã lọc
   const [filterValue, setFilterValue] = useState(""); // State chứa giá trị tìm ưkiếm
   const hasSearchFilter = Boolean(filterValue);
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
-  const thisPageUrl = `http://localhost:3000/console/orderManager`;
+  const thisPageUrl = `http://localhost:3000/console/brandManager`;
+  const goToCreateBrand = `${thisPageUrl}/createBrand`;
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
-  const completeOrder = (orderId: any) => {
-    axios
-      .put(`${baseURL}/orders/complete/${orderId}`)
-      .then(function (res) {
-        console.log(`Complete order with ID: ${orderId}`);
-        const isConfirmed = window.confirm(
-          `Complete order ID: ${orderId}`
-        );
-        if (isConfirmed) {
-          {
-            window.location.reload();
-          }
-        }
-      })
+  const editBrand = (brandId: any) => {
+    window.open(`${thisPageUrl}/editBrand/${brandId}`);
   };
-  const cancelOrder = (orderId: any) => {
+  const deleteBrand = (brandId: any) => {
     axios
-      .put(`${baseURL}/orders/cancel/${orderId}`)
+      .delete(`${baseURL}/brands/${brandId}`)
       .then(function (res) {
-        console.log(`Cancel order with ID: ${orderId}`);
+        console.log(`Done delete brand with ID: ${brandId}`);
         const isConfirmed = window.confirm(
-          `Cancel order ID: ${orderId}`
-        );
-        if (isConfirmed) {
-          {
-            window.location.reload();
-          }
-        }
-      })
-  };
-  const viewDetails = (orderId: any) => {
-    window.open(`${thisPageUrl}/${orderId}`);
-  };
-  const deleteOrder = (orderId: any) => {
-    axios
-      .delete(`${baseURL}/orders/${orderId}`)
-      .then(function (res) {
-        console.log(`Done delete order with ID: ${orderId}`);
-        const isConfirmed = window.confirm(
-          `Complete deleted order ID: ${orderId}`
+          `Complete deleted product ID: ${brandId}`
         );
         if (isConfirmed) {
           {
@@ -105,42 +77,26 @@ export default function ProductManager() {
       });
   };
   //Dạng như gán res vào chuỗi
-  type orderData = (typeof order)[0];
+  type brandData = (typeof brand)[0];
   //Render từng cell của table (vì có một số cell là custom, chứ không thì table tự render ra vẫn đc)
   const renderCell = React.useCallback(
-    (orderdata: orderData, columnKey: React.Key) => {
-      const cellValue = orderdata[columnKey as keyof orderData];
+    (branddata: brandData, columnKey: React.Key) => {
+      const cellValue = branddata[columnKey as keyof brandData];
 
       switch (columnKey) {
         case "name":
           return (
-            <div className="flex flex-col w-[100px]">
+            <div className="flex flex-col w-[180px]">
               <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {orderdata.account_name}
+                {branddata.name}
               </p>
             </div>
           );
-        case "email":
+        case "description":
           return (
-            <div className="flex flex-col w-[200px]">
+            <div className="flex flex-col w-[300px]">
               <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {orderdata.account_email}
-              </p>
-            </div>
-          );
-        case "phone":
-          return (
-            <div className="flex flex-col w-[80px]">
-              <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {orderdata.account_phone}
-              </p>
-            </div>
-          );
-        case "address":
-          return (
-            <div className="flex flex-col w-[200px]">
-              <p className="text-bold text-sm capitalize text-default-400 text-left">
-                {orderdata.shipping_address}
+                {branddata.description}
               </p>
             </div>
           );
@@ -148,7 +104,7 @@ export default function ProductManager() {
           return (
             <Chip
               className="capitalize"
-              color={statusColorMap[orderdata.status]}
+              color={statusColorMap[branddata.status]}
               size="sm"
               variant="flat"
             >
@@ -158,34 +114,23 @@ export default function ProductManager() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <Tooltip content="Cancel Order">
-                <span
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => cancelOrder(orderdata.id) }
-                >
-                  <GiCancel />
-                </span>
-              </Tooltip>
-              <Tooltip content="Complete Order">
-                <span
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => completeOrder(orderdata.id) }
-                >
-                  <FaCheck />
-                </span>
-              </Tooltip>
               <Tooltip content="Details">
-                <span
-                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => viewDetails(orderdata.id) }
-                >
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                   <EyeIcon />
                 </span>
               </Tooltip>
-              <Tooltip color="danger" content="Delete Order">
+              <Tooltip content="Edit Brand">
+                <span
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  onClick={() => editBrand(branddata.id)}
+                >
+                  <EditIcon />
+                </span>
+              </Tooltip>
+              <Tooltip color="danger" content="Delete Product">
                 <span
                   className="text-lg text-danger cursor-pointer active:opacity-50"
-                  onClick={() => deleteOrder(orderdata.id)}
+                  onClick={() => deleteBrand(branddata.id)}
                 >
                   <DeleteIcon />
                 </span>
@@ -201,10 +146,10 @@ export default function ProductManager() {
   //thực hiên GET data từ API và gán vào state setProduct
   useEffect(() => {
     axios
-      .get(`${baseURL}/orders`)
+      .get(`${baseURL}/brands`)
       .then(function (res) {
-        console.log(res.data.orders);
-        setOrder(res.data.orders);
+        console.log(res.data.brands);
+        setBrands(res.data.brands);
       })
       .catch(function (err) {
         console.log(err);
@@ -212,23 +157,23 @@ export default function ProductManager() {
   }, []);
   //Top search bar
   const filteredItems = React.useMemo(() => {
-    let filteredProducts = [...order];
+    let filteredProducts = [...brand];
 
     if (hasSearchFilter) {
-      filteredProducts = filteredProducts.filter((order) =>
-        order.account_name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredProducts = filteredProducts.filter((product) =>
+        product.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length  
+      Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredProducts = filteredProducts.filter((order) =>
-        Array.from(statusFilter).includes(order.status)
+      filteredProducts = filteredProducts.filter((product) =>
+        Array.from(statusFilter).includes(product.status)
       );
     }
     return filteredProducts;
-  }, [order, hasSearchFilter, statusFilter, filterValue]);
+  }, [brand, hasSearchFilter, statusFilter, filterValue]);
   //Thực hiện search
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -290,11 +235,19 @@ export default function ProductManager() {
                 ))}
               </DropdownMenu>
             </Dropdown>
+            <Button
+              className="bg-foreground text-background"
+              endContent={<PlusIcon width={undefined} height={undefined} />}
+              size="sm"
+              onClick={() => window.open(goToCreateBrand)}
+            >
+              Add New
+            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {order.length} orders
+            Total {brand.length} brands
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -314,7 +267,7 @@ export default function ProductManager() {
     filterValue,
     onSearchChange,
     statusFilter,
-    order.length,
+    brand.length,
     onRowsPerPageChange,
   ]);
   //Định nghĩa lại items trong table

@@ -5,6 +5,10 @@ class Type {
     let sql = "SELECT * FROM type";
     return db.execute(sql);
   }
+  static findTypeById(id) {
+    let sql = `SELECT * FROM type WHERE id=${id}`;
+    return db.execute(sql);
+  }
 }
 
 module.exports = Type;

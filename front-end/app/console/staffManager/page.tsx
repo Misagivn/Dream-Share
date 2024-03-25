@@ -182,8 +182,8 @@ export default function ProductManager() {
     let filteredProducts = [...staff];
 
     if (hasSearchFilter) {
-      filteredProducts = filteredProducts.filter((product) =>
-        product.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredProducts = filteredProducts.filter((staff) =>
+        staff.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
