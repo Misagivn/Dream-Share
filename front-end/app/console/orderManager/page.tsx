@@ -19,10 +19,10 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
-import { PlusIcon } from "./PlusIcon";
 import { SearchIcon } from "./SearchIcon";
 import { EyeIcon } from "./EyeIcon";
-import { EditIcon } from "./EditIcon";
+import { FaCheck } from "react-icons/fa";
+import { GiCancel } from "react-icons/gi";
 import { DeleteIcon } from "./DeleteIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
@@ -45,16 +45,44 @@ export default function ProductManager() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const pages = Math.ceil(order.length / rowsPerPage);
   //Setup cho search bar
-  const [filteredProducts, setFilteredProducts] = useState([]); // State chứa danh sách sản phẩm đã lọc
   const [filterValue, setFilterValue] = useState(""); // State chứa giá trị tìm ưkiếm
   const hasSearchFilter = Boolean(filterValue);
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
   const thisPageUrl = `http://localhost:3000/console/orderManager`;
-  const goToCreateProduct = `${thisPageUrl}/createProduct`;
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
+  const completeOrder = (orderId: any) => {
+    axios
+      .put(`${baseURL}/orders/complete/${orderId}`)
+      .then(function (res) {
+        console.log(`Complete order with ID: ${orderId}`);
+        const isConfirmed = window.confirm(
+          `Complete order ID: ${orderId}`
+        );
+        if (isConfirmed) {
+          {
+            window.location.reload();
+          }
+        }
+      })
+  };
+  const cancelOrder = (orderId: any) => {
+    axios
+      .put(`${baseURL}/orders/cancel/${orderId}`)
+      .then(function (res) {
+        console.log(`Cancel order with ID: ${orderId}`);
+        const isConfirmed = window.confirm(
+          `Cancel order ID: ${orderId}`
+        );
+        if (isConfirmed) {
+          {
+            window.location.reload();
+          }
+        }
+      })
+  };
   const viewDetails = (orderId: any) => {
     window.open(`${thisPageUrl}/${orderId}`);
   };
@@ -130,6 +158,22 @@ export default function ProductManager() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
+              <Tooltip content="Cancel Order">
+                <span
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  onClick={() => cancelOrder(orderdata.id) }
+                >
+                  <GiCancel />
+                </span>
+              </Tooltip>
+              <Tooltip content="Complete Order">
+                <span
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  onClick={() => completeOrder(orderdata.id) }
+                >
+                  <FaCheck />
+                </span>
+              </Tooltip>
               <Tooltip content="Details">
                 <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"

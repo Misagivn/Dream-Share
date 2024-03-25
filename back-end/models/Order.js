@@ -76,6 +76,15 @@ class Order {
     return db.execute(sql1), db.execute(sql2);
   }
 
+  static completeOrder(id) {
+    let sql = `UPDATE order1 SET status='Complete' WHERE id=${id}`
+    return db.execute(sql);
+  }
+
+  static cancelOrder(id) {
+    let sql = `UPDATE order1 SET status='Cancel' WHERE id=${id}`
+    return db.execute(sql);
+  }
   UpdatedAnOrder(id) {
     let d = new Date();
     let yyyy = d.getFullYear();

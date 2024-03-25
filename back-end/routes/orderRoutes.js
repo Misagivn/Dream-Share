@@ -13,4 +13,11 @@ router
 .put(orderControllers.UpdateAnOrder)
 .delete(orderControllers.deleteOrder)
 
+router
+.route('/complete/:id')
+.put(orderControllers.completeOrder)
+
+router
+.route('/cancel/:id')
+.put(orderControllers.cancelOrder)
 module.exports = router;

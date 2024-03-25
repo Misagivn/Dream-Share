@@ -99,3 +99,25 @@ exports.UpdateAnOrder = async (req, res, next) => {
     next(error);
   }
 }
+
+exports.completeOrder = async (req, res, next) => {
+  try {
+    let orderId = req.params.id;
+    const [orders, _] = await Order.completeOrder(orderId);
+    res.status(200).json({message:"Order status is now COMPLETE!"});
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+exports.cancelOrder = async (req, res, next) => {
+  try {
+    let orderId = req.params.id;
+    const [orders, _] = await Order.cancelOrder(orderId);
+    res.status(200).json({message:"Order status is now CACNEL!"});
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
