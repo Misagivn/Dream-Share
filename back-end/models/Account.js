@@ -50,8 +50,21 @@ class Account {
     return db.execute(sql);
   }
 
-  static findAccountByEmail(accEmail){
+  static findAccountByEmail(accEmail) {
     let sql = `SELECT * FROM account WHERE email = '${accEmail}'`;
+    return db.execute(sql);
+  }
+
+  addToWallet(id, money) {
+    let sql = `
+    UPDATE account SET wallet = wallet + ${money} WHERE id = ${id}
+    `;
+    return db.execute(sql);
+  }
+  updateToWallet(id, money) {
+    let sql = `
+    UPDATE account SET wallet = wallet - ${money} WHERE id = ${id}
+    `;
     return db.execute(sql);
   }
 }

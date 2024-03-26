@@ -48,3 +48,35 @@ exports.checkExist = async (req, res, next) => {
     next(error);
   }
 }
+
+  exports.addWallet = async (req, res, next) => {
+    try {
+      let accId = req.params.id;
+      let addMoney = req.params.money;
+      let account = new Account;
+      account = await account.addToWallet(accId, addMoney);
+      res.status(201).json({ message: "Add Successfully!"});
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  };
+  
+  exports.updateWallet = async (req, res, next) => {
+    try {
+      let accId = req.params.id;
+      let addMoney = req.params.money
+      let {
+        wallet
+      } = req.body;
+      let account = new Account(
+        wallet
+      );
+      account = await account.updateToWallet(accId, addMoney);
+      res.status(201).json({ message: "Update Successfully!"});
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  };
+
