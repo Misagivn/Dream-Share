@@ -129,6 +129,16 @@ class Product {
     let sql = `SELECT * FROM product WHERE name LIKE '%${productName}%'`;
     return db.execute(sql);
   }
+
+  UpdateQuantity(id, sale_quantity) {
+    let sql = `
+    UPDATE product  SET 
+        quantity = quantity - ${sale_quantity}
+     WHERE id = ${id}
+    `;
+
+    return db.execute(sql);
+  }
 }
 
 module.exports = Product;

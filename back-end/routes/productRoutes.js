@@ -83,7 +83,9 @@ router
   )
   .delete(productControllers.deleteProduct);
 
-router.route("/search/:productName").get(productControllers.getProductByName);
+router
+  .route("/:id/:quantity")
+  .put(productControllers.updateQuantity);
 
 // function exportDownloadUrl(downloadUrlString) {
 //   module.exports.downloadUrlString = downloadUrlString;

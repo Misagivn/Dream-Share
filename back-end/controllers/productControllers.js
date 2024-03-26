@@ -126,3 +126,21 @@ exports.getProductByName = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.updateQuantity = async (req, res, next) => {
+  try {
+    let productId = req.params.id;
+    let new_quantity = req.params.quantity
+    let {
+      quantity
+    } = req.body;
+    let product = new Product(
+      quantity
+    );
+    product = await product.UpdateQuantity(productId, new_quantity);
+    res.status(201).json({ message: "Update Successfully!"});
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
