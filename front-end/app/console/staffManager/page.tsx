@@ -152,6 +152,7 @@ export default function StaffManager() {
     []
   );
   //thực hiên GET data từ API và gán vào state setStaff
+  //giao dien
   useEffect(() => {
     axios
       .get(`${baseURL}/staffs`)
