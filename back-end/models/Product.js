@@ -82,6 +82,11 @@ class Product {
     return db.execute(sql);
   }
 
+  static findAllActive() {
+    let sql = "SELECT * FROM product WHERE status = 'Active'";
+    return db.execute(sql);
+  }
+
   static findProductById(id) {
     let sql = `SELECT * FROM product WHERE id=${id}`;
     return db.execute(sql);

@@ -7,6 +7,25 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { files: 10 }, // Giới hạn chỉ cho phép tải lên 3 file
 });
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+
+function authenticationTokenUser(req, res, next){
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if(token == null) return res.sendStatus(401)
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, account) => {
+    if(err || account.role !== 3) return res.sendStatus(403)
+    // console.log(role)
+    req.account = account
+    next()
+  })
+}
+
+router
+  .route("/activeProducts")
+  .get(productControllers.getActiveProducts)
+
 router
   .route("/")
   .get(productControllers.getAllProducts)
@@ -84,8 +103,8 @@ router
   .delete(productControllers.deleteProduct);
 
 router
-  .route("/:id/:quantity")
-  .put(productControllers.updateQuantity);
+  .route("/saleQuantity/:id/:quantity")
+  .put(authenticationTokenUser, productControllers.updateQuantity);
 
 // function exportDownloadUrl(downloadUrlString) {
 //   module.exports.downloadUrlString = downloadUrlString;

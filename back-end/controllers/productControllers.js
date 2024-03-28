@@ -10,6 +10,16 @@ exports.getAllProducts = async (req, res, next) => {
   }
 };
 
+exports.getActiveProducts = async (req, res, next) => {
+  try {
+    const [products, _] = await Product.findAllActive();
+    res.status(200).json({ count: products.length, products });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 exports.createNewProducts = async (req, res, next, downloadUrlString) => {
   try {
     let {

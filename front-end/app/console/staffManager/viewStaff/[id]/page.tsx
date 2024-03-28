@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 export default function ViewStaffPage({ params }) {
   const currentId = params.id;
 
-  const baseURL = "http://localhost:5000";
+  const baseURL = "http://26.221.156.50:5000";
   const axios = require("axios");
   const [staffName, setStaffName] = useState([]);
   const [staffEmail, setStaffEmail] = useState([]);

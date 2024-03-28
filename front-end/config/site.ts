@@ -8,14 +8,7 @@ export const siteConfig = {
 			label: "Home",
 			href: "/",
 		},
-    {
-      label: "Categories",
-      href: "/categories",
-    },
-	{
-		label: "Collections",
-		href: "/collections",
-	},
+
     {
       label: "About",
       href: "/about",

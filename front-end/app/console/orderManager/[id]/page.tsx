@@ -20,7 +20,7 @@ export default function ProductManager({ params }) {
   const currentId = params.id;
 
   //Các biến connect + get data từ API
-  const baseURL = "http://localhost:5000";
+  const baseURL = "http://26.221.156.50:5000";
   const axios = require("axios");
   const [orderDetails, setOrderDetails] = useState([]); //Tạo state tất cả Order
   //Setup các biến để pagination
@@ -33,7 +33,7 @@ export default function ProductManager({ params }) {
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
-  const thisPageUrl = `http://localhost:3000/console/orderManager`;
+  const thisPageUrl = `http://26.221.156.50:3000/console/orderManager`;
   const [productMapping, setProductMapping] = useState({});
   useEffect(() => {
     // Fetch product data from API

@@ -1,10 +1,37 @@
 const Staff = require("../models/Staff.js");
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
 
 exports.getAllStaffs = async (req, res, next) => {
   try {
     const [staffs, _] = await Staff.findAll();
     res.status(200).json({ count: staffs.length, staffs });
   } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+exports.getStaffLogin = async (req, res, next) => {
+  try {
+    let { email, password } = req.body;
+    let staff = new Staff (email, password);
+    staff = await staff.checkStaffLogin(); 
+    console.log("create new access:",staff[0][0].role_id)
+    const accessToken = jwt.sign(
+      {
+        name: staff[0][0].name,
+        role: staff[0][0].role_id
+      },   
+      process.env.ACCESS_TOKEN_SECRET)
+
+    res.status(200).json({
+      message: "Account does match",
+      staff,
+      accessToken
+    });
+  } catch (error) {
+    res.status(400).json({ error: "Email or Password incorrect" });
     console.log(error);
     next(error);
   }

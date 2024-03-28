@@ -28,6 +28,8 @@ import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import React from "react";
+import { createContext } from "vm";
+import { AuthProvider } from "react-auth-kit";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   Active: "success",
@@ -37,7 +39,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 export default function ProductManager() {
   //Các biến connect + get data từ API
-  const baseURL = "http://localhost:5000";
+  const baseURL = "http://26.221.156.50:5000";
   const axios = require("axios");
   const [product, setProduct] = useState([]); //Tạo state tất cả product
   //Setup các biến để pagination
@@ -51,7 +53,7 @@ export default function ProductManager() {
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
-  const thisPageUrl = `http://localhost:3000/console/productManager`;
+  const thisPageUrl = `http://26.221.156.50:3000/console/productManager`;
   const goToCreateProduct = `${thisPageUrl}/createProduct`;
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product

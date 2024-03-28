@@ -50,7 +50,7 @@ export default function ProductManager() {
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
-  const thisPageUrl = `http://localhost:3000/console/brandManager`;
+  const thisPageUrl = `http://26.221.156.50:3000/console/brandManager`;
   const goToCreateBrand = `${thisPageUrl}/createBrand`;
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product

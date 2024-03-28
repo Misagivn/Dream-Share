@@ -4,13 +4,13 @@ class OrderDetail {
   constructor(
     order_Id,
     product_id,
-    price,
-    quantity
+    quantity,
+    price
   ) {
     (this.order_Id = order_Id),
     (this.product_id = product_id),
-    (this.price = price),
-    (this.quantity = quantity)
+    (this.quantity = quantity),
+    (this.price = price)
   }
 
   save() {

@@ -20,13 +20,9 @@ import clsx from "clsx";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 import {
-  TwitterIcon,
   GithubIcon,
-  DiscordIcon,
-  HeartFilledIcon,
   SearchIcon,
 } from "@/components/icons";
-
 import { Logo } from "@/components/icons";
 
 export const Navbar = () => {
@@ -85,26 +81,24 @@ export const Navbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
         <NavbarItem className="hidden md:flex gap-2">
           <Button
             color="primary"
-            variant="bordered"
+            variant="solid"
             as={Link}
             className="text-sm font-normal"
-            href="/signup"
           >
-            Sign Up
+            Sign In
           </Button>
-          <Button
+          {/* <Button
             color="primary"
             variant="solid"
             as={Link}
             className="text-sm font-normal"
             href="/signin"
           >
-            Sign In
-          </Button>
+            Logout
+          </Button> */}
         </NavbarItem>
       </NavbarContent>
 

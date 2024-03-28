@@ -37,7 +37,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 export default function ProductManager() {
   //Các biến connect + get data từ API
-  const baseURL = "http://localhost:5000";
+  const baseURL = "http://26.221.156.50:5000";
   const axios = require("axios");
   const [staff, setStaff] = useState([]); //Tạo state tất cả Order
   //Setup các biến để pagination
@@ -51,7 +51,7 @@ export default function ProductManager() {
   //Setup cho status filter
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
-  const thisPageUrl = `http://localhost:3000/console/staffManager`;
+  const thisPageUrl = `http://26.221.156.50:3000/console/staffManager`;
   const goToCreateStaff = `${thisPageUrl}/createStaff`;
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
@@ -304,7 +304,7 @@ export default function ProductManager() {
   return (
     // <Router>
     //   <Routes>
-    //     <Route path="http://localhost:3000/console/productManager:id" element={<EditProductPage/>}/>
+    //     <Route path="http://26.221.156.50:3000/console/productManager:id" element={<EditProductPage/>}/>
     <div className="">
       <Table
         aria-label="Example table with custom cells"

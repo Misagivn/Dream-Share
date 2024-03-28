@@ -85,6 +85,11 @@ class Staff {
     return db.execute(sql);
   }
 
+  checkStaffLogin() {
+    let sql = `SELECT * FROM account WHERE email='${this.email}' AND password='${this.password}' AND (role_id = 1 OR role_id = 2) AND status = 'Active'`;
+    return db.execute(sql);
+  }
+
   static findStaffById(id){
     let sql = `SELECT * FROM account WHERE id=${id}`;
     return db.execute(sql);

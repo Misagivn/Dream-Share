@@ -1,16 +1,28 @@
 const Account = require("../models/Account.js");
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+
 
 exports.checkAccount = async (req, res, next) => {
   try {
     let { email, password } = req.body;
     let account = new Account(email, password);
-    account = await account.checkAccount();
+    account = await account.checkAccount(); 
+    console.log(account[0][0].role_id)
+    const accessToken = jwt.sign(
+      {
+        name: account[0][0].name,
+        role: account[0][0].role_id
+      },   
+      process.env.ACCESS_TOKEN_SECRET)
 
     res.status(200).json({
       message: "Account does match",
-      account
+      account,
+      accessToken
     });
   } catch (error) {
+    res.status(400).json({ error: "Email or Password incorrect" });
     console.log(error);
     next(error);
   }
