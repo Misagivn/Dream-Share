@@ -8,6 +8,7 @@ const columns = [
   { name: "ACCOUNT PHONE", uid: "phone", sortable: true },
   { name: "ADDRESS", uid: "address", sortable: true },
   { name: "STATUS", uid: "status", sortable: true },
+  { name: "TOTAL PRICE", uid: "total_price", sortable: true },
   { name: "ACTIONS", uid: "actions" },
 ];
 

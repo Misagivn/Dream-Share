@@ -30,9 +30,10 @@ class Account {
       gender,
       status,
       address,
-      created_at
+      created_at,
+      wallet
     ) VALUES (
-        '1',
+        '3',
         '${this.email}',
         '${this.password}',
         '${this.name}',
@@ -40,7 +41,8 @@ class Account {
         '${this.gender}',
         'Active',
         '${this.address}',
-        '${createdDate}'
+        '${createdDate}',
+        '0'
     )
     `;
     return db.execute(sql);

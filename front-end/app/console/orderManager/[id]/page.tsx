@@ -15,7 +15,6 @@ import { DeleteIcon } from "./DeleteIcon";
 import { columns, statusOptions } from "./data";
 import React from "react";
 
-
 export default function ProductManager({ params }) {
   const currentId = params.id;
 
@@ -35,10 +34,22 @@ export default function ProductManager({ params }) {
   //Các biển để vào xâu hơn các page sau
   const thisPageUrl = `http://26.221.156.50:3000/console/orderManager`;
   const [productMapping, setProductMapping] = useState({});
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const savedToken = window.localStorage.getItem("accessToken");
+    if (savedToken === null) {
+      console.log("No token found");
+      alert("You must Login to access these function");
+    } else {
+      setToken(savedToken);
+    }
+  }, []);
   useEffect(() => {
     // Fetch product data from API
     axios
-      .get(`${baseURL}/products`)
+      .get(`${baseURL}/products`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(function (res) {
         const products = res.data.products;
         const mapping = {};
@@ -50,7 +61,7 @@ export default function ProductManager({ params }) {
       .catch(function (err) {
         console.error(err);
       });
-  }, []);
+  }, [token]);
   const getProductName = (productId) => {
     return productMapping[productId] || "Unknown Product";
   };

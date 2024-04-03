@@ -32,7 +32,7 @@ export default function SignUpPage() {
         const accessToken = res.data.accessToken
         localStorage.setItem('accessToken', accessToken)
         setLoggedIn(true);
-        //window.location.href = "/console"
+        window.location.href = "/console"
       })
       .catch(function (err) {
         alert("Email or Password is not correct");

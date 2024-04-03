@@ -51,44 +51,59 @@ export default function ProductManager() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
   const thisPageUrl = `http://26.221.156.50:3000/console/orderManager`;
+
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const savedToken = window.localStorage.getItem("token");
+    if (savedToken === null) {
+      console.log("No token found");
+      alert("You must Login to access these function");
+    } else {
+      setToken(savedToken);
+    }
+  }, []);
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
-  const completeOrder = (orderId: any) => {
-    axios
-      .put(`${baseURL}/orders/complete/${orderId}`)
-      .then(function (res) {
+  const completeOrder = (orderId: any, orderStatus: any) => {
+    if (orderStatus === "Pending") {
+      axios.put(`${baseURL}/orders/complete/${orderId}`).then(function (res) {
         console.log(`Complete order with ID: ${orderId}`);
-        const isConfirmed = window.confirm(
-          `Complete order ID: ${orderId}`
-        );
+        const isConfirmed = window.confirm(`Complete order ID: ${orderId}`);
         if (isConfirmed) {
           {
             window.location.reload();
           }
         }
-      })
+      });
+    } else {
+      alert(
+        "Can't complete this order. This order is already completed or cancel"
+      );
+    }
   };
-  const cancelOrder = (orderId: any) => {
-    axios
-      .put(`${baseURL}/orders/cancel/${orderId}`)
-      .then(function (res) {
+  const cancelOrder = (orderId: any, orderStatus: any) => {
+    if (orderStatus === "Pending"){
+      axios.put(`${baseURL}/orders/cancel/${orderId}`).then(function (res) {
         console.log(`Cancel order with ID: ${orderId}`);
-        const isConfirmed = window.confirm(
-          `Cancel order ID: ${orderId}`
-        );
+        const isConfirmed = window.confirm(`Cancel order ID: ${orderId}`);
         if (isConfirmed) {
           {
             window.location.reload();
           }
         }
-      })
+      });
+    }else{
+      alert("Can't cancel this order. This order is already completed or cancel");
+    }
   };
   const viewDetails = (orderId: any) => {
     window.open(`${thisPageUrl}/${orderId}`);
   };
-  const deleteOrder = (orderId: any) => {
+  const deleteOrder = (orderId: any, token: any) => {
     axios
-      .delete(`${baseURL}/orders/${orderId}`)
+      .delete(`${baseURL}/orders/${orderId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(function (res) {
         console.log(`Done delete order with ID: ${orderId}`);
         const isConfirmed = window.confirm(
@@ -101,6 +116,7 @@ export default function ProductManager() {
         }
       })
       .catch(function (err) {
+        alert("Can't delete this Product. Please inform IT Support");
         console.log(err);
       });
   };
@@ -144,6 +160,14 @@ export default function ProductManager() {
               </p>
             </div>
           );
+        case "total_price":
+          return (
+            <div className="flex flex-col w-[50px]">
+              <p className="text-bold text-sm capitalize text-default-400 text-left">
+                {orderdata.total_price}
+              </p>
+            </div>
+          );
         case "status":
           return (
             <Chip
@@ -161,7 +185,7 @@ export default function ProductManager() {
               <Tooltip content="Cancel Order">
                 <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => cancelOrder(orderdata.id) }
+                  onClick={() => cancelOrder(orderdata.id, orderdata.status)}
                 >
                   <GiCancel />
                 </span>
@@ -169,7 +193,7 @@ export default function ProductManager() {
               <Tooltip content="Complete Order">
                 <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => completeOrder(orderdata.id) }
+                  onClick={() => completeOrder(orderdata.id, orderdata.status)}
                 >
                   <FaCheck />
                 </span>
@@ -177,7 +201,7 @@ export default function ProductManager() {
               <Tooltip content="Details">
                 <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => viewDetails(orderdata.id) }
+                  onClick={() => viewDetails(orderdata.id)}
                 >
                   <EyeIcon />
                 </span>
@@ -185,7 +209,7 @@ export default function ProductManager() {
               <Tooltip color="danger" content="Delete Order">
                 <span
                   className="text-lg text-danger cursor-pointer active:opacity-50"
-                  onClick={() => deleteOrder(orderdata.id)}
+                  onClick={() => deleteOrder(orderdata.id, token)}
                 >
                   <DeleteIcon />
                 </span>
@@ -196,12 +220,14 @@ export default function ProductManager() {
           return cellValue;
       }
     },
-    []
+    [token]
   );
   //thực hiên GET data từ API và gán vào state setProduct
   useEffect(() => {
     axios
-      .get(`${baseURL}/orders`)
+      .get(`${baseURL}/orders`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(function (res) {
         console.log(res.data.orders);
         setOrder(res.data.orders);
@@ -209,7 +235,7 @@ export default function ProductManager() {
       .catch(function (err) {
         console.log(err);
       });
-  }, []);
+  }, [token]);
   //Top search bar
   const filteredItems = React.useMemo(() => {
     let filteredProducts = [...order];
@@ -221,7 +247,7 @@ export default function ProductManager() {
     }
     if (
       statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length  
+      Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredProducts = filteredProducts.filter((order) =>
         Array.from(statusFilter).includes(order.status)

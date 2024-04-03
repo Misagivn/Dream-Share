@@ -28,8 +28,7 @@ import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import React from "react";
-import { createContext } from "vm";
-import { AuthProvider } from "react-auth-kit";
+// const localStorage = require('serviceworker-localstorage')
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   Active: "success",
@@ -54,18 +53,32 @@ export default function ProductManager() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
   const thisPageUrl = `http://26.221.156.50:3000/console/productManager`;
-  const goToCreateProduct = `${thisPageUrl}/createProduct`;
-  //Hàm thực hiện follow vào view/update details
-  //Hàm thực hiện delete product
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const savedToken = window.localStorage.getItem("accessToken");
+    if (savedToken === null) {
+      console.log("No token found");
+      alert("You must Login to access these function");
+    } else {
+      setToken(savedToken);
+    }
+  }, []);
+
+  const goToCreateProduct = () => {
+    window.open(`${thisPageUrl}/createProduct`);
+  }
+
   const viewProduct = (productId: any) => {
     window.open(`${thisPageUrl}/viewProduct/${productId}`);
   };
   const editProduct = (productId: any) => {
     window.open(`${thisPageUrl}/editProduct/${productId}`);
   };
-  const deleteProduct = (productId: any) => {
+  const deleteProduct = (productId: any, tokenLogin: any) => {
     axios
-      .delete(`${baseURL}/products/${productId}`)
+      .delete(`${baseURL}/products/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(function (res) {
         console.log(`Done delete product with ID: ${productId}`);
         const isConfirmed = window.confirm(
@@ -78,6 +91,8 @@ export default function ProductManager() {
         }
       })
       .catch(function (err) {
+        console.log(token);
+        alert("Can't delete this Product. Please inform IT Support");
         console.log(err);
       });
   };
@@ -93,9 +108,10 @@ export default function ProductManager() {
           return (
             <User
               avatarProps={{
-                radius: "lg",
+                radius: "md",
                 src: productdata.image || "https://loremflickr.com/320/240/dog",
               }}
+              className="flex w-[170px] place-item-start justify-item-start"
               description={productdata.code}
               name={cellValue}
             >
@@ -125,9 +141,10 @@ export default function ProductManager() {
           return (
             <div className="relative flex items-center gap-2">
               <Tooltip content="Details">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                <span
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
                   onClick={() => viewProduct(productdata.id)}
-                  >
+                >
                   <EyeIcon />
                 </span>
               </Tooltip>
@@ -142,7 +159,7 @@ export default function ProductManager() {
               <Tooltip color="danger" content="Delete Product">
                 <span
                   className="text-lg text-danger cursor-pointer active:opacity-50"
-                  onClick={() => deleteProduct(productdata.id)}
+                  onClick={() => deleteProduct(productdata.id, token)}
                 >
                   <DeleteIcon />
                 </span>
@@ -153,12 +170,15 @@ export default function ProductManager() {
           return cellValue;
       }
     },
-    []
+    [token]
   );
   //thực hiên GET data từ API và gán vào state setProduct
+
   useEffect(() => {
     axios
-      .get(`${baseURL}/products`)
+      .get(`${baseURL}/products`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       .then(function (res) {
         console.log(res.data.products);
         setProduct(res.data.products);
@@ -166,7 +186,7 @@ export default function ProductManager() {
       .catch(function (err) {
         console.log(err);
       });
-  }, []);
+  }, [token]);
   //Top search bar
   const filteredItems = React.useMemo(() => {
     let filteredProducts = [...product];
@@ -251,7 +271,7 @@ export default function ProductManager() {
               className="bg-foreground text-background"
               endContent={<PlusIcon width={undefined} height={undefined} />}
               size="sm"
-              onClick={() => window.open(goToCreateProduct)}
+              onClick={goToCreateProduct}
             >
               Add New
             </Button>

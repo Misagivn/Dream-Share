@@ -22,14 +22,26 @@ function authenticationTokenUser(req, res, next){
   })
 }
 
+function authenticationTokenAdmin(req, res, next){
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if(token == null) return res.sendStatus(401)
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, account) => {
+    if(err || account.role === 3) return res.sendStatus(403)
+    // console.log(role)
+    req.account = account
+    next()
+  })
+}
+
 router
   .route("/activeProducts")
   .get(productControllers.getActiveProducts)
 
 router
   .route("/")
-  .get(productControllers.getAllProducts)
-  .post(upload.single("image"), (req, res, next) => {
+  .get(authenticationTokenAdmin,productControllers.getAllProducts)
+  .post(authenticationTokenAdmin ,upload.single("image"), (req, res, next) => {
     if (!req.file) {
       return res.status(400).send("Error: No files found");
     }
@@ -100,7 +112,7 @@ router
   // }
   productControllers.updatedAProduct
   )
-  .delete(productControllers.deleteProduct);
+  .delete(authenticationTokenAdmin ,productControllers.deleteProduct);
 
 router
   .route("/saleQuantity/:id/:quantity")

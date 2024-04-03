@@ -47,6 +47,10 @@ export const Navbar = () => {
     />
   );
 
+  const logOutFunc = () => {
+    //window.localStorage.clear();
+  }
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -87,18 +91,20 @@ export const Navbar = () => {
             variant="solid"
             as={Link}
             className="text-sm font-normal"
+            href="/signin"
           >
             Sign In
           </Button>
-          {/* <Button
+          <Button
             color="primary"
             variant="solid"
             as={Link}
             className="text-sm font-normal"
+            //onClick={logOutFunc}
             href="/signin"
           >
             Logout
-          </Button> */}
+          </Button>
         </NavbarItem>
       </NavbarContent>
 

@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { CameraIcon } from "./CameraIcon";
-
+import { userToken } from "../page";
 
 export default function CreateNewProductsPage() {
   const baseURL = "http://26.221.156.50:5000";
@@ -33,6 +33,7 @@ export default function CreateNewProductsPage() {
   const [selectedType, setSelectedType] = React.useState<string>("");
   const [selectedBrand, setSelectedBrand] = React.useState<string>("");
   const [selectedCategory, setSelectedCategory] = React.useState<string>("");
+
   //fetch type từ API
   useEffect(() => {
     axios
@@ -42,6 +43,7 @@ export default function CreateNewProductsPage() {
         setType(res.data.types);
       })
       .catch(function (err) {
+        alert("Can't fetch data. Please inform IT Support");
         console.log(err);
       });
   }, []);
@@ -54,6 +56,7 @@ export default function CreateNewProductsPage() {
         setBrand(res.data.brands);
       })
       .catch(function (err) {
+        //alert("Can't fetch data. Please inform IT Support");
         console.log(err);
       });
   }, []);
@@ -62,6 +65,7 @@ export default function CreateNewProductsPage() {
     axios
       .get(`${baseURL}/categories`)
       .then(function (res) {
+        //alert("Can't fetch data. Please inform IT Support");
         console.log(res.data.categories);
         setCategory(res.data.categories);
       })
@@ -102,7 +106,7 @@ export default function CreateNewProductsPage() {
   }, [productQuantity]);
   // Function to handle image selection
   const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedImage, setSelectedImage] = useState([])
+  const [selectedImage, setSelectedImage] = useState([]);
   function handleImageSelection(event: { target: { files: any[] } }) {
     const file = event.target.files[0];
     if (file) {
@@ -132,27 +136,31 @@ export default function CreateNewProductsPage() {
   };
   function createNewProduct() {
     const formData = new FormData();
-      formData.append("type_id", selectedType);
-      formData.append("brand_id", selectedBrand);
-      formData.append("cate_id", selectedCategory);
-      formData.append("code", productCode);
-      formData.append("name", productName);
-      formData.append("description", productDescription);
-      formData.append("highlight", isHighlighted ? 1 : 0);
-      formData.append("quantity", productQuantity);
-      formData.append("size", productSize);
-      formData.append("color", productColor);
-      formData.append("status", productStatus);
-      formData.append("price", productPrice);
-      formData.append("image", selectedFile);
+    formData.append("type_id", selectedType);
+    formData.append("brand_id", selectedBrand);
+    formData.append("cate_id", selectedCategory);
+    formData.append("code", productCode);
+    formData.append("name", productName);
+    formData.append("description", productDescription);
+    formData.append("highlight", isHighlighted ? 1 : 0);
+    formData.append("quantity", productQuantity);
+    formData.append("size", productSize);
+    formData.append("color", productColor);
+    formData.append("status", productStatus);
+    formData.append("price", productPrice);
+    formData.append("image", selectedFile);
 
     axios
-      .post(`${baseURL}/products`, formData ,{
-        headers: {
-          "Content-Type": "multipart/form-data",
-        }
-      }
-      ,newProductData)
+      .post(
+        `${baseURL}/products`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+        newProductData
+      )
       .then(function (res) {
         console.log("Create new success!!!");
         console.log(res.data);
