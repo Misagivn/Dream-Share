@@ -100,7 +100,7 @@ export const Navbar = () => {
             variant="solid"
             as={Link}
             className="text-sm font-normal"
-            //onClick={logOutFunc}
+            //onClick={localStorage.removeItem("accessToken")}
             href="/signin"
           >
             Logout

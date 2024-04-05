@@ -34,6 +34,17 @@ export default function CreateNewProductsPage() {
   const [selectedBrand, setSelectedBrand] = React.useState<string>("");
   const [selectedCategory, setSelectedCategory] = React.useState<string>("");
 
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const savedToken = window.localStorage.getItem("accessToken");
+    if (savedToken === null) {
+      console.log("No token found");
+      alert("You must Login to access these function");
+    } else {
+      setToken(savedToken);
+    }
+  }, []);
+
   //fetch type từ API
   useEffect(() => {
     axios
@@ -157,6 +168,7 @@ export default function CreateNewProductsPage() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`
           },
         },
         newProductData
@@ -170,6 +182,7 @@ export default function CreateNewProductsPage() {
         window.close();
       })
       .catch(function (err) {
+        alert("Image can't be empty")
         console.log(err);
       });
   }

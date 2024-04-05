@@ -144,6 +144,16 @@ class Product {
 
     return db.execute(sql);
   }
+
+  AddQuantity(id, sale_quantity) {
+    let sql = `
+    UPDATE product  SET 
+        quantity = quantity + ${sale_quantity}
+     WHERE id = ${id}
+    `;
+
+    return db.execute(sql);
+  }
 }
 
 module.exports = Product;

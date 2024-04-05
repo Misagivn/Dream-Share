@@ -73,6 +73,14 @@ export default function ProductManager({ params }) {
       const cellValue = orderdata[columnKey as keyof orderData];
 
       switch (columnKey) {
+        case "product_id":
+          return (
+            <div className="flex flex-col w-[50px]">
+              <p className="text-bold text-slg capitalize text-default-400 text-left">
+                {orderdata.product_id}
+              </p>
+            </div>
+          );
         case "name":
           const productName = getProductName(orderdata.product_id);
           return (
@@ -129,6 +137,8 @@ export default function ProductManager({ params }) {
         console.log(err);
       });
   }, []);
+  //Export function reupdate quantity
+
   //Top search bar
   const filteredItems = React.useMemo(() => {
     let filteredProducts = [...orderDetails];

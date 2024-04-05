@@ -36,6 +36,17 @@ export default function EditProductsPage({ params }) {
   const [selectedBrand, setSelectedBrand] = React.useState<string>("");
   const [selectedCategory, setSelectedCategory] = React.useState<string>("");
 
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const savedToken = window.localStorage.getItem("accessToken");
+    if (savedToken === null) {
+      console.log("No token found");
+      alert("You must Login to access these function");
+    } else {
+      setToken(savedToken);
+    }
+  }, []);
+
   //fetch type từ API
   useEffect(() => {
     axios
@@ -191,10 +202,15 @@ export default function EditProductsPage({ params }) {
         //     "Content-Type": "multipart/form-data",
         //   },
         // },
-        newProductData
+        newProductData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       )
       .then(function (res) {
-        console.log("Create new success!!!");
+        console.log("Edit new success!!!");
         console.log(res.data);
         // Notify user
         alert("Product Updated successfully!. Closing this tab");
@@ -205,6 +221,7 @@ export default function EditProductsPage({ params }) {
         console.log(err);
       });
   }
+  const typeSelect = `${selectedType}`;
 
   return (
     <div>

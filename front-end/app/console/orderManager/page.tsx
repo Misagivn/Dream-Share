@@ -51,10 +51,11 @@ export default function ProductManager() {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   //Các biển để vào xâu hơn các page sau
   const thisPageUrl = `http://26.221.156.50:3000/console/orderManager`;
+  const [userOrderId, setUserOrderId] = useState([]);
 
   const [token, setToken] = useState("");
   useEffect(() => {
-    const savedToken = window.localStorage.getItem("token");
+    const savedToken = window.localStorage.getItem("accessToken");
     if (savedToken === null) {
       console.log("No token found");
       alert("You must Login to access these function");
@@ -66,34 +67,100 @@ export default function ProductManager() {
   //Hàm thực hiện delete product
   const completeOrder = (orderId: any, orderStatus: any) => {
     if (orderStatus === "Pending") {
-      axios.put(`${baseURL}/orders/complete/${orderId}`).then(function (res) {
-        console.log(`Complete order with ID: ${orderId}`);
-        const isConfirmed = window.confirm(`Complete order ID: ${orderId}`);
-        if (isConfirmed) {
+      axios
+        .put(
+          `${baseURL}/orders/complete/${orderId}`,
+          {},
           {
-            window.location.reload();
+            headers: { Authorization: `Bearer ${token}` },
           }
-        }
-      });
+        )
+        .then(function (res) {
+          console.log(`Complete order with ID: ${orderId}`);
+          const isConfirmed = window.confirm(`Complete order ID: ${orderId}`);
+          if (isConfirmed) {
+            {
+              window.location.reload();
+            }
+          }
+        });
     } else {
       alert(
         "Can't complete this order. This order is already completed or cancel"
       );
     }
   };
-  const cancelOrder = (orderId: any, orderStatus: any) => {
-    if (orderStatus === "Pending"){
-      axios.put(`${baseURL}/orders/cancel/${orderId}`).then(function (res) {
-        console.log(`Cancel order with ID: ${orderId}`);
-        const isConfirmed = window.confirm(`Cancel order ID: ${orderId}`);
-        if (isConfirmed) {
+  const [orderDetails, setOrderDetails] = useState([]);
+  const cancelOrder = (
+    orderId: any,
+    orderStatus: any,
+    accountId: any,
+    money: any
+  ) => {
+    if (orderStatus === "Pending") {
+      axios
+        .get(`${baseURL}/orderdetails/${orderId}`)
+        .then(function (res) {
+          console.log(res.data.orderDetails);
+          const numberOrderDetails = res.data.orderDetails.length;
+          const orderDetailsData = res.data.orderDetails;
+          console.log(numberOrderDetails);
+          console.log(orderDetailsData);
+          setOrderDetails(res.data.orderDetails);
+          orderDetailsData.forEach((detail) => {
+            if (detail.product_id) {
+              axios.put(
+                `${baseURL}/products/updateQuantity/${detail.product_id}/${detail.quantity}`,
+                {},
+                {
+                  headers: { Authorization: `Bearer ${token}` },
+                }
+              ).then (function (res) {
+                console.log("Update quantity success");
+              })
+            }
+          });
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+      axios
+        .put(
+          `${baseURL}/orders/cancel/${orderId}`,
+          {},
           {
-            window.location.reload();
+            headers: { Authorization: `Bearer ${token}` },
           }
-        }
-      });
-    }else{
-      alert("Can't cancel this order. This order is already completed or cancel");
+        )
+        .then(function (res) {
+          console.log(`Cancel order with ID: ${orderId}`);
+          const isConfirmed = window.confirm(`Cancel order ID: ${orderId}`);
+          if (isConfirmed) {
+            {
+              //window.location.reload();
+            }
+          }
+        });
+      axios
+        .put(
+          `${baseURL}/accounts/addWallet/${accountId}/${money}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then(function (res) {
+          console.log(`Update wallet user ${accountId} add ${money}`);
+        });
+      type OrderDetailsData = (typeof orderDetails)[0];
+      // axios
+      //   .put(
+      //     `${baseURL}/products/updateQuantity/${order.product_id}/${orderDetails.quantity}`,
+      //   )
+    } else {
+      alert(
+        "Can't cancel this order. This order is already completed or cancel"
+      );
     }
   };
   const viewDetails = (orderId: any) => {
@@ -128,6 +195,14 @@ export default function ProductManager() {
       const cellValue = orderdata[columnKey as keyof orderData];
 
       switch (columnKey) {
+        case "account_id":
+          return (
+            <div className="flex flex-col w-[30px]">
+              <p className="text-bold text-sm capitalize text-default-400 text-left">
+                {orderdata.account_id}
+              </p>
+            </div>
+          );
         case "name":
           return (
             <div className="flex flex-col w-[100px]">
@@ -185,7 +260,14 @@ export default function ProductManager() {
               <Tooltip content="Cancel Order">
                 <span
                   className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  onClick={() => cancelOrder(orderdata.id, orderdata.status)}
+                  onClick={() =>
+                    cancelOrder(
+                      orderdata.id,
+                      orderdata.status,
+                      orderdata.account_id,
+                      orderdata.total_price
+                    )
+                  }
                 >
                   <GiCancel />
                 </span>

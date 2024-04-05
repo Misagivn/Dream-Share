@@ -13,6 +13,17 @@ export default function CreateNewProductsPage() {
   const axios = require("axios");
   const [brandName, setBrandName] = useState([]);
   const [brandDescription, setBrandDescription] = useState([])
+
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const savedToken = window.localStorage.getItem("accessToken");
+    if (savedToken === null) {
+      console.log("No token found");
+      alert("You must Login to access these function");
+    } else {
+      setToken(savedToken);
+    }
+  }, []);
   // Hàm kiểm tra tên sản phẩm not null
   const checkNameValid = React.useMemo(() => {
     if (brandName === "") return true;
@@ -32,7 +43,9 @@ export default function CreateNewProductsPage() {
 
     axios
       .post(`${baseURL}/brands`
-        , newBrandData)
+        , newBrandData, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
       .then(function (res) {
         console.log("Create new success!!!");
         console.log(res.data);

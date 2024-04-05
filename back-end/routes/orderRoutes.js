@@ -50,7 +50,7 @@ router
   .put(orderControllers.UpdateAnOrder)
   .delete(authenticationTokenAdmin ,orderControllers.deleteOrder);
 
-router.route("/complete/:id").put(orderControllers.completeOrder);
+router.route("/complete/:id").put(authenticationTokenAdmin, orderControllers.completeOrder);
 
-router.route("/cancel/:id").put(orderControllers.cancelOrder);
+router.route("/cancel/:id").put(authenticationTokenAdmin ,orderControllers.cancelOrder);
 module.exports = router;

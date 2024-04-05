@@ -1,4 +1,5 @@
 const Order = require("../models/Order.js");
+const Account = require("../models/Account.js")
 
 exports.getAllOrders = async (req, res, next) => {
   try {
@@ -114,6 +115,7 @@ exports.completeOrder = async (req, res, next) => {
 exports.cancelOrder = async (req, res, next) => {
   try {
     let orderId = req.params.id;
+    let accountId = req.params.accId
     const [orders, _] = await Order.cancelOrder(orderId);
     res.status(200).json({message:"Order status is now CACNEL!"});
   } catch (error) {

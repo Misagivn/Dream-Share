@@ -154,3 +154,21 @@ exports.updateQuantity = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.addQuantity = async (req, res, next) => {
+  try {
+    let productId = req.params.id;
+    let sale_quantity = req.params.quantity
+    let {
+      quantity
+    } = req.body;
+    let product = new Product(
+      quantity
+    );
+    product = await product.AddQuantity(productId, sale_quantity);
+    res.status(201).json({ message: "Add Successfully!"});
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};

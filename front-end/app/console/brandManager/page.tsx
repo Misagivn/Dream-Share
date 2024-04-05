@@ -52,6 +52,17 @@ export default function ProductManager() {
   //Các biển để vào xâu hơn các page sau
   const thisPageUrl = `http://26.221.156.50:3000/console/brandManager`;
   const goToCreateBrand = `${thisPageUrl}/createBrand`;
+
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const savedToken = window.localStorage.getItem("accessToken");
+    if (savedToken === null) {
+      console.log("No token found");
+      alert("You must Login to access these function");
+    } else {
+      setToken(savedToken);
+    }
+  }, []);
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
   const editBrand = (brandId: any) => {
@@ -59,7 +70,9 @@ export default function ProductManager() {
   };
   const deleteBrand = (brandId: any) => {
     axios
-      .delete(`${baseURL}/brands/${brandId}`)
+      .delete(`${baseURL}/brands/${brandId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(function (res) {
         console.log(`Done delete brand with ID: ${brandId}`);
         const isConfirmed = window.confirm(

@@ -3,12 +3,13 @@ import axios from "axios";
 
 const columns = [
   { name: "ID", uid: "id", sortable: true },
-  { name: "ACCOUNT NAME", uid: "name", sortable: true },
+  { name: "ACCOUNT ID", uid: "account_id", sortable: false },
+  { name: "ACCOUNT NAME", uid: "name", sortable: false },
   {name: "ACCOUNT EMAIL", uid:"email", sortable: false},
-  { name: "ACCOUNT PHONE", uid: "phone", sortable: true },
-  { name: "ADDRESS", uid: "address", sortable: true },
-  { name: "STATUS", uid: "status", sortable: true },
-  { name: "TOTAL PRICE", uid: "total_price", sortable: true },
+  { name: "ACCOUNT PHONE", uid: "phone", sortable: false },
+  { name: "ADDRESS", uid: "address", sortable: false },
+  { name: "STATUS", uid: "status", sortable: false },
+  { name: "TOTAL PRICE", uid: "total_price", sortable: false },
   { name: "ACTIONS", uid: "actions" },
 ];
 

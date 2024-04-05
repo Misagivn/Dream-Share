@@ -110,6 +110,7 @@ router
   //   });
   //   blobWriter.end(req.file.buffer);
   // }
+  authenticationTokenAdmin,
   productControllers.updatedAProduct
   )
   .delete(authenticationTokenAdmin ,productControllers.deleteProduct);
@@ -117,6 +118,10 @@ router
 router
   .route("/saleQuantity/:id/:quantity")
   .put(authenticationTokenUser, productControllers.updateQuantity);
+
+router
+  .route("/updateQuantity/:id/:quantity")
+  .put(authenticationTokenAdmin, productControllers.addQuantity);
 
 // function exportDownloadUrl(downloadUrlString) {
 //   module.exports.downloadUrlString = downloadUrlString;
