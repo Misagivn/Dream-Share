@@ -53,6 +53,16 @@ export default function ProductManager() {
   //Các biển để vào xâu hơn các page sau
   const thisPageUrl = `http://26.221.156.50:3000/console/staffManager`;
   const goToCreateStaff = `${thisPageUrl}/createStaff`;
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const savedToken = window.localStorage.getItem("accessToken");
+    if (savedToken === null) {
+      console.log("No token found");
+      alert("You must Login to access these function");
+    } else {
+      setToken(savedToken);
+    }
+  }, []);
   //Hàm thực hiện follow vào view/update details
   //Hàm thực hiện delete product
   const editStaff = (staffId: any) => {
@@ -168,7 +178,7 @@ export default function ProductManager() {
   //thực hiên GET data từ API và gán vào state setProduct
   useEffect(() => {
     axios
-      .get(`${baseURL}/staffs`)
+      .get(`${baseURL}/staffs`, { headers: { Authorization: `Bearer ${token}` } })
       .then(function (res) {
         console.log(res.data.staffs);
         setStaff(res.data.staffs);

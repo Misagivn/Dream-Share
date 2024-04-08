@@ -27,6 +27,16 @@ export default function CreateNewProductsPage() {
     if (staffName === "") return true;
     return false;
   }, [staffName]);
+const checkEmailValid = React.useMemo(() => {
+  if (staffEmail === "") return true;
+  return false;
+}, [staffName]);  
+  // const validateEmail = (staffEmail: string) => staffEmail.toString().match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
+  // const isInvalid = React.useMemo(() => {
+  //   if (staffEmail === "") return false;
+  //   return validateEmail(staffEmail) ? false : true;
+  // }, [staffEmail]);
+
   //Kiểm tra quantity + price
   const handleSexSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSex(e.target.value);
@@ -79,6 +89,9 @@ export default function CreateNewProductsPage() {
             <Input
               type="email"
               label="Email"
+              value={staffEmail}
+              color={checkEmailValid ? "danger" : "success"}
+              isInvalid={checkEmailValid}
               placeholder="Enter staff Email"
               onValueChange={(value) => setStaffEmail(value)}
             />
@@ -101,7 +114,7 @@ export default function CreateNewProductsPage() {
           <Spacer y="10px" />
           <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
             <Select
-              items={types}
+              // items={types}
               label="Staff Sex"
               placeholder="Select Sex"
               isRequired
